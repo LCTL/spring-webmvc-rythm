@@ -1,0 +1,127 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.ctlok</groupId>
+	<artifactId>spring-web-rythm-template</artifactId>
+	<version>1.0.0</version>
+	<packaging>jar</packaging>
+	<name>Rythm Template Engine for Spring</name>
+	<url>https://github.com/lawrence0819/spring-web-rythm-template</url>
+
+	<developers>
+		<developer>
+			<id>lawrence</id>
+			<name>Lawrence Cheung</name>
+			<email>lawrence0819@gmail.com</email>
+			<timezone>+8</timezone>
+		</developer>
+	</developers>
+	
+	<scm>
+		<url>https://github.com/lawrence0819/spring-web-rythm-template</url>
+		<connection>scm:git:git@github.com:lawrence0819/spring-web-rythm-template.git</connection>
+	</scm>
+
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+			<comments>A business-friendly OSS license</comments>
+		</license>
+	</licenses>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+		<java.version>1.6</java.version>
+
+		<dependency.servlet-api.version>2.5</dependency.servlet-api.version>
+		<dependency.spring.version>3.0.0.RELEASE</dependency.spring.version>
+		<dependency.rythm.version>1.0.0-20121110</dependency.rythm.version>
+		<dependency.slf4j-api.version>1.6.6</dependency.slf4j-api.version>
+		<dependency.slf4j-impl.version>1.6.6</dependency.slf4j-impl.version>
+
+		<dependency.junit.version>4.10</dependency.junit.version>
+		<dependency.logback.version>1.0.6</dependency.logback.version>
+
+		<plugin.maven-compiler.version>2.3.2</plugin.maven-compiler.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>${dependency.servlet-api.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${dependency.spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.rythmengine</groupId>
+			<artifactId>rythm</artifactId>
+			<version>${dependency.rythm.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${dependency.slf4j-api.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>${dependency.slf4j-impl.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${dependency.junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${dependency.spring.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+			<version>${dependency.logback.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${dependency.logback.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${plugin.maven-compiler.version}</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+					<encoding>${project.build.sourceEncoding}</encoding>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
