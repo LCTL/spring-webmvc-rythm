@@ -28,28 +28,33 @@ public class WebBaseTest {
 	
 	public static final String CONTEXT_PATH = "/spring-rythm/";
 	
-	protected XmlWebApplicationContext webApplicationContext;
+	protected static XmlWebApplicationContext webApplicationContext;
+	
 	protected MockHttpServletRequest request;
 	
 	@Before
 	public void before() {
-		MockServletContext servletContext = new MockServletContext();
-		webApplicationContext = new XmlWebApplicationContext();
-		webApplicationContext.setConfigLocations(new String[]{
-		        "classpath:test-context.xml", "classpath:test-security-context.xml"});
-		webApplicationContext.setServletContext(servletContext);
-		webApplicationContext.refresh();
-		
-		servletContext.setAttribute(
-		        WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, 
-		        webApplicationContext);
-		servletContext.setContextPath(CONTEXT_PATH);
+	    
+	    if (webApplicationContext == null){
+    		MockServletContext servletContext = new MockServletContext();
+    		webApplicationContext = new XmlWebApplicationContext();
+    		webApplicationContext.setConfigLocations(new String[]{
+    		        "classpath:test-context.xml", "classpath:test-security-context.xml"});
+    		webApplicationContext.setServletContext(servletContext);
+    		webApplicationContext.refresh();
+    		
+    		servletContext.setAttribute(
+    		        WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, 
+    		        webApplicationContext);
+    		servletContext.setContextPath(CONTEXT_PATH);
+	    }
 		
 		request = new MockHttpServletRequest();
 		request.setContextPath(CONTEXT_PATH);
 		
 		RequestAttributes attributes = new ServletRequestAttributes(request);
 		RequestContextHolder.setRequestAttributes(attributes);
+		
 	}
 	
 	public String renderTemplate(String template, Map<String, Object> model) throws Exception{

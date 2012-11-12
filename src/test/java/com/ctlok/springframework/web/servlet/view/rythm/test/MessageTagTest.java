@@ -1,15 +1,9 @@
 package com.ctlok.springframework.web.servlet.view.rythm.test;
 
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.web.servlet.View;
-
-import com.ctlok.springframework.web.servlet.view.rythm.RythmViewResolver;
 
 /**
  * @author Lawrence Cheung
@@ -62,28 +56,17 @@ public class MessageTagTest extends WebBaseTest {
 	
 	protected void compareMessage(String templateName, String messageCode, 
 			Locale locale, String defaultMessage, boolean changeLocale, Object ... args) throws Exception{
-		
-		RythmViewResolver rythmViewResolver = this.getBean(RythmViewResolver.class);
-		MockHttpServletResponse response = new MockHttpServletResponse();
-		Map<String, Object> model = new HashMap<String, Object>();
-		
-		View view = rythmViewResolver.resolveViewName(templateName, locale);
 
 		if (changeLocale){
 			this.changeLocale(locale);
 		}
-		
-		view.render(model, this.request, response);
-		
+
 		String expected = defaultMessage == null ? 
 				this.getMessage(messageCode, args, locale) :
 					this.getMessage(messageCode, args, defaultMessage, locale);
-				
-		String actuals = this.processString(response.getContentAsString());
-		
 		expected = this.processString(expected);
 		
-		Assert.assertEquals(expected.trim(), actuals.trim());
+		Assert.assertEquals(expected.trim(), this.renderTemplate(templateName, null));
 		
 	}
 
