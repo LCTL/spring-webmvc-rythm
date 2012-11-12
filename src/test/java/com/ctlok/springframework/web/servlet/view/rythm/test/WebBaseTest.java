@@ -2,6 +2,7 @@ package com.ctlok.springframework.web.servlet.view.rythm.test;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Locale;
+import java.util.Map;
 
 import org.junit.Before;
 import org.springframework.beans.BeansException;
@@ -15,6 +16,9 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.context.support.XmlWebApplicationContext;
 import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.View;
+
+import com.ctlok.springframework.web.servlet.view.rythm.RythmViewResolver;
 
 /**
  * @author Lawrence Cheung
@@ -31,11 +35,14 @@ public class WebBaseTest {
 	public void before() {
 		MockServletContext servletContext = new MockServletContext();
 		webApplicationContext = new XmlWebApplicationContext();
-		webApplicationContext.setConfigLocation("classpath:test-context.xml");
+		webApplicationContext.setConfigLocations(new String[]{
+		        "classpath:test-context.xml", "classpath:test-security-context.xml"});
 		webApplicationContext.setServletContext(servletContext);
 		webApplicationContext.refresh();
 		
-		servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, webApplicationContext);
+		servletContext.setAttribute(
+		        WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, 
+		        webApplicationContext);
 		servletContext.setContextPath(CONTEXT_PATH);
 		
 		request = new MockHttpServletRequest();
@@ -43,6 +50,16 @@ public class WebBaseTest {
 		
 		RequestAttributes attributes = new ServletRequestAttributes(request);
 		RequestContextHolder.setRequestAttributes(attributes);
+	}
+	
+	public String renderTemplate(String template, Map<String, Object> model) throws Exception{
+	    RythmViewResolver rythmViewResolver = this.getBean(RythmViewResolver.class);
+        MockHttpServletResponse response = new MockHttpServletResponse();
+        
+        View view = rythmViewResolver.resolveViewName(template, null);
+        view.render(model, request, response);
+        
+        return this.processString(response.getContentAsString());
 	}
 	
 	public void changeLocale(Locale locale){

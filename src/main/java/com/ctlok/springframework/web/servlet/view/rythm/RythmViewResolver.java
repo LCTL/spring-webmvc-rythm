@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.view.AbstractTemplateViewResolver;
 
 import com.ctlok.springframework.web.servlet.view.rythm.tag.Message;
+import com.ctlok.springframework.web.servlet.view.rythm.tag.Secured;
 import com.ctlok.springframework.web.servlet.view.rythm.tag.Url;
 import com.ctlok.springframework.web.servlet.view.rythm.variable.HttpServletRequestVariable;
 import com.ctlok.springframework.web.servlet.view.rythm.variable.ImplicitVariable;
@@ -77,6 +78,7 @@ public class RythmViewResolver extends AbstractTemplateViewResolver {
     	
     	configurator.getTags().add(new Url());
     	configurator.getTags().add(new Message(this.getApplicationContext()));
+    	configurator.getTags().add(new Secured());
     }
 
 }

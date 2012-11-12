@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.ctlok</groupId>
 	<artifactId>spring-web-rythm-template</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 	<packaging>jar</packaging>
 	<name>Rythm Template Engine for Spring</name>
 	<url>https://github.com/lawrence0819/spring-web-rythm-template</url>
@@ -56,6 +56,13 @@
 			<version>${dependency.servlet-api.version}</version>
 			<scope>provided</scope>
 		</dependency>
+        
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>${dependency.spring.version}</version>
+            <scope>provided</scope>
+        </dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -94,6 +101,13 @@
 			<version>${dependency.spring.version}</version>
 			<scope>test</scope>
 		</dependency>
+        
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${dependency.spring.version}</version>
+            <scope>test</scope>
+        </dependency>
 
 		<dependency>
 			<groupId>ch.qos.logback</groupId>

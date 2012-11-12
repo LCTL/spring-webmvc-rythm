@@ -1,4 +1,4 @@
-## Rythm Template Engine for Spring Web
+# Rythm Template Engine for Spring Web
 
 This is a plugin for Spring to adapt Rythm template engine. 
 Rythm template engine is a high performance templates engine which is multiple times faster than groovy, velocity and freemarker.
@@ -8,7 +8,7 @@ Rythm template engine source: [https://github.com/greenlaw110/Rythm] (https://gi
 Rythm template engine tutorial: [http://play-rythm-demo.appspot.com/] (http://play-rythm-demo.appspot.com/)
 
 
-## How to integrate with Spring Web
+# How to integrate with Spring Web
 
 Dependencies:
 
@@ -37,7 +37,7 @@ Maven project follow below step:
 
 ***
 
-### Spring config example
+## Spring config example
 
 ```
 <bean id="rythmConfigurator" class="com.ctlok.springframework.web.servlet.view.rythm.RythmConfigurator">
@@ -55,7 +55,7 @@ Maven project follow below step:
 </bean>
 ```
 
-#### Support Spring Internationalization (I18N)
+### Support Spring Internationalization (I18N)
 
 ```
 <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
@@ -84,7 +84,7 @@ Maven project follow below step:
 
 ***
 
-Build in `@message` tag help you to get current locale message in template: 
+`@message` tag help you to get current locale message in template: 
 
 ```
 <p>@message("message.code")</p>
@@ -97,7 +97,45 @@ Build in `@message` tag help you to get current locale message in template:
 <p>@message({code: "message.code", default: "Output me if code not found", locale: "fr", "arg0", "arg1"})</p>
 ```
 
-Build in `@url` tag help you add context path before resource path:
+### Support Spring Security (Optional)
+
+Dependencies:
+
+* Spring Security Core 3.0.0 or above
+
+```
+<authentication-manager>
+    <authentication-provider>
+        <user-service>
+            <user name="admin" password="admin" authorities="ROLE_ADMIN, ROLE_USER" />
+            <user name="user" password="user" authorities="ROLE_USER" />
+            <user name="anonymous" password="anonymous" authorities="ROLE_ANONYMOUS" />
+        </user-service>
+    </authentication-provider>
+</authentication-manager> 
+```
+
+***
+
+`@secured` tag help you check current user is it has role and display conten:
+
+```
+@secured("ROLE_ADMIN"){
+    admin content
+}
+
+@secured("ROLE_USER"){
+    user content
+}
+
+@secured("ROLE_USER", "ROLE_ANONYMOUS"){
+    anonymous content
+}
+```
+
+## Build in Tag
+
+`@url` tag help you to add context path before resource path:
 
 ```
 @url("/javascripts/jQuery.min.js")
