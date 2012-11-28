@@ -12,9 +12,9 @@ Rythm template engine tutorial: [http://play-rythm-demo.appspot.com/] (http://pl
 
 Dependencies:
 
-* Rythm 1.0.0-20121110 or above
+* Rythm 1.0.0-20121126 or above
 * Servlet 2.5 or above
-* Spring Webmvc 3.0.0 or above
+* Spring web-mvc 3.1.0 or above
 * Slf4j 1.6.6 or above
 
 ***
@@ -97,11 +97,51 @@ Maven project follow below step:
 <p>@message({code: "message.code", default: "Output me if code not found", locale: "fr", "arg0", "arg1"})</p>
 ```
 
+### Support Spring cache in template
+
+```
+<bean id="cacheManagerFactory" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+    <property name="configLocation" value="classpath:ehcache.xml" />
+</bean>
+
+<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+    <property name="cacheManager" ref="cacheManagerFactory" />
+</bean>
+
+<bean id="rythmConfigurator" class="com.ctlok.springframework.web.servlet.view.rythm.RythmConfigurator">
+    <property name="mode" value="dev" />
+    <property name="rootDirectory" value="/WEB-INF/views/" />
+    <property name="tagRootDirectory" value="/WEB-INF/views/tags/" />
+    <property name="cacheInProductionModeOnly" value="false" />
+    <property name="cacheManager" ref="cacheManager" />
+    <property name="springCacheName" value="RYTHM_CACHE" />
+</bean>
+```
+
+ehcache.xml:
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache>
+
+    <diskStore path="java.io.tmpdir" />
+    
+    <defaultCache 
+        maxElementsInMemory="300" eternal="false" timeToIdleSeconds="500"
+        timeToLiveSeconds="500" overflowToDisk="true" />
+        
+    <cache name="RYTHM_CACHE" maxElementsInMemory="300" eternal="false" timeToIdleSeconds="500"
+        timeToLiveSeconds="3600" overflowToDisk="false" />
+        
+</ehcache>
+```
+
+How to use cache in Rythm template: [http://play-rythm-demo.appspot.com/demo/testcache] (http://play-rythm-demo.appspot.com/demo/testcache)
+
 ### Support Spring Security (Optional)
 
 Dependencies:
 
-* Spring Security Core 3.0.0 or above
+* Spring Security Core 3.1.0 or above
 
 ```
 <authentication-manager>
