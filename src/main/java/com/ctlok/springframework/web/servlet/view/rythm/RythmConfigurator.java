@@ -7,8 +7,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.springframework.cache.CacheManager;
 import org.springframework.web.context.support.WebApplicationObjectSupport;
 
+import com.ctlok.springframework.web.servlet.view.rythm.cache.SpringRythmCache;
 import com.ctlok.springframework.web.servlet.view.rythm.log.RythmLoggerFactory;
 import com.ctlok.springframework.web.servlet.view.rythm.variable.ImplicitVariable;
 import com.greenlaw110.rythm.IByteCodeHelper;
@@ -27,7 +29,7 @@ import com.greenlaw110.rythm.utils.IImplicitRenderArgProvider;
  *
  */
 public class RythmConfigurator extends WebApplicationObjectSupport {
-
+    
 	private Boolean autoScanTag;
 	private Boolean cacheInProductionModeOnly;
 	private Boolean compactOutput;
@@ -59,6 +61,12 @@ public class RythmConfigurator extends WebApplicationObjectSupport {
 	private ILoggerFactory loggerFactory;
 	private ITemplateResourceLoader resourceLoader;
 	private IByteCodeHelper byteCodeHelper;
+	
+	/*
+	 * Spring Cache config
+	 */
+	private CacheManager cacheManager;
+	private String springCacheName = "RYTHM_TEMPLATE_CACHE";
 
 	public Properties generateConfig() {
 		final Properties props = new Properties();
@@ -84,7 +92,7 @@ public class RythmConfigurator extends WebApplicationObjectSupport {
 		
 		this.implicitConfig(props);
 		
-		this.setProperties(props, "rythm.cache.service", cacheService);
+		this.cacheServiceConfig(props);
 		this.setProperties(props, "rythm.classLoader.parent", classLoader);
 		this.setProperties(props, "rythm.cache.durationParser", durationParser);
 		this.setProperties(props, "rythm.tag.fileNameFilter", fileNameFilter);
@@ -189,6 +197,17 @@ public class RythmConfigurator extends WebApplicationObjectSupport {
 			props.put("rythm.tag.root",
 					this.getServletContext().getRealPath(this.tagRootDirectory));
 		}
+	}
+	
+	protected void cacheServiceConfig(final Properties props){
+	    if (cacheManager == null){
+	        this.setProperties(props, "rythm.cache.service", this.cacheService);
+	    }else{
+	        final SpringRythmCache springRythmCache = 
+	                new SpringRythmCache(cacheManager.getCache(this.springCacheName));
+
+	        this.setProperties(props, "rythm.cache.service", springRythmCache);
+	    }
 	}
 
 	public Boolean isAutoScanTag() {
@@ -311,7 +330,7 @@ public class RythmConfigurator extends WebApplicationObjectSupport {
 		this.tempDirectory = tempDirectory;
 	}
 
-	public Integer getCacheDefaultTTL() {
+    public Integer getCacheDefaultTTL() {
 		return cacheDefaultTTL;
 	}
 
@@ -406,5 +425,21 @@ public class RythmConfigurator extends WebApplicationObjectSupport {
 	public void setByteCodeHelper(IByteCodeHelper byteCodeHelper) {
 		this.byteCodeHelper = byteCodeHelper;
 	}
+
+    public CacheManager getCacheManager() {
+        return cacheManager;
+    }
+
+    public void setCacheManager(CacheManager cacheManager) {
+        this.cacheManager = cacheManager;
+    }
+
+    public String getSpringCacheName() {
+        return springCacheName;
+    }
+
+    public void setSpringCacheName(String springCacheName) {
+        this.springCacheName = springCacheName;
+    }
 
 }
