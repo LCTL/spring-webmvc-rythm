@@ -20,7 +20,8 @@
 	
 	<scm>
 		<url>https://github.com/lawrence0819/spring-web-rythm-template</url>
-		<connection>scm:git:git@github.com:lawrence0819/spring-web-rythm-template.git</connection>
+        <connection>scm:git:git://github.com/lawrence0819/spring-web-rythm-template.git</connection>
+        <developerConnection>scm:git:git@github.com:lawrence0819/spring-web-rythm-template.git</developerConnection>
 	</scm>
 
 	<licenses>
