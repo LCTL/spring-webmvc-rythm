@@ -1,13 +1,16 @@
 package com.ctlok.springframework.web.servlet.view.rythm;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.web.servlet.view.AbstractTemplateViewResolver;
 
+import com.ctlok.springframework.web.servlet.view.rythm.tag.DateFormat;
 import com.ctlok.springframework.web.servlet.view.rythm.tag.Message;
 import com.ctlok.springframework.web.servlet.view.rythm.tag.Secured;
 import com.ctlok.springframework.web.servlet.view.rythm.tag.Url;
@@ -76,9 +79,22 @@ public class RythmViewResolver extends AbstractTemplateViewResolver {
     		configurator.setTags(new ArrayList<ITag>());
     	}
     	
-    	configurator.getTags().add(new Url());
-    	configurator.getTags().add(new Message(this.getApplicationContext()));
-    	configurator.getTags().add(new Secured());
+    	final AutowireCapableBeanFactory factory = this.getApplicationContext().getAutowireCapableBeanFactory();
+    	for (final Class<? extends ITag> clazz: this.defaultTagClasses()){
+    		final Object tag = factory.autowire(
+    				clazz, AutowireCapableBeanFactory.AUTOWIRE_CONSTRUCTOR, false);
+    		
+    		configurator.getTags().add((ITag) tag);
+    	}
+    }
+ 
+	protected List<Class<? extends ITag>> defaultTagClasses(){
+		List<Class<? extends ITag>> classes = new ArrayList<Class<? extends ITag>>();
+		classes.add(Url.class);
+		classes.add(Message.class);
+		classes.add(Secured.class);
+		classes.add(DateFormat.class);
+		return classes;
     }
 
 }

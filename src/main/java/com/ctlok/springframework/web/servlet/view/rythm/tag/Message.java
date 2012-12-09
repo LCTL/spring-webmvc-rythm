@@ -9,6 +9,7 @@ import org.apache.commons.lang3.LocaleUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.NoSuchMessageException;
 import org.springframework.web.servlet.LocaleResolver;
@@ -28,6 +29,7 @@ public class Message extends JavaTagBase {
 	private LocaleResolver localeResolver;
 	private Locale defaultLocale;
 	
+	@Autowired
 	public Message(
 			final ApplicationContext applicationContext){
 		this.applicationContext = applicationContext;
