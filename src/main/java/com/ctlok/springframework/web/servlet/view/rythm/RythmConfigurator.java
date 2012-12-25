@@ -1,5 +1,6 @@
 package com.ctlok.springframework.web.servlet.view.rythm;
 
+import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,16 +38,15 @@ public class RythmConfigurator extends WebApplicationObjectSupport {
 	private Boolean loadPreCompiled;
 	private Boolean logJavaSource;
 	private Boolean logRenderTime;
+	private Boolean preCompiledRoot;
 	private Boolean noFileWrite;
 	private Boolean refreshOnRender;
 	
 	private String mode;
-	private String preCompiledRoot;
 	private String reloadMethod;
 	private String rootDirectory;
 	private String tagRootDirectory;
 	private String tempDirectory;
-	
 	private Integer cacheDefaultTTL;
 	
 	private List<String> implicitPackages;
@@ -82,7 +82,7 @@ public class RythmConfigurator extends WebApplicationObjectSupport {
 		this.setProperties(props, "rythm.resource.refreshOnRender", refreshOnRender);
 
 		this.modeConfig(props);
-		this.setProperties(props, "rythm.preCompiled.root", preCompiledRoot);
+		this.preCompiledRootConfig(props);
 		this.reloadMethodConfig(props);
 		this.rootDirectoryConfig(props);
 		this.tagRootDirectoryConfig(props);
@@ -209,6 +209,13 @@ public class RythmConfigurator extends WebApplicationObjectSupport {
 	        this.setProperties(props, "rythm.cache.service", springRythmCache);
 	    }
 	}
+	
+	protected void preCompiledRootConfig(final Properties props){
+		if (preCompiledRoot != null && rootDirectory != null){
+			final File root = new File(this.getServletContext().getRealPath(this.rootDirectory));
+			props.put("rythm.preCompiled.root", root);
+		}
+	}
 
 	public Boolean isAutoScanTag() {
 		return autoScanTag;
@@ -290,11 +297,11 @@ public class RythmConfigurator extends WebApplicationObjectSupport {
 		this.mode = mode;
 	}
 
-	public String getPreCompiledRoot() {
+	public Boolean isPreCompiledRoot() {
 		return preCompiledRoot;
 	}
 
-	public void setPreCompiledRoot(String preCompiledRoot) {
+	public void setPreCompiledRoot(Boolean preCompiledRoot) {
 		this.preCompiledRoot = preCompiledRoot;
 	}
 

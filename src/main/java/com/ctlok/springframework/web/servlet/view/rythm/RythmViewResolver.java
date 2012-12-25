@@ -1,5 +1,6 @@
 package com.ctlok.springframework.web.servlet.view.rythm;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +60,18 @@ public class RythmViewResolver extends AbstractTemplateViewResolver {
         	}
         }
         
+        if (configurator.isPreCompiledRoot() != null 
+        		&& configurator.getRootDirectory() != null
+        		&& configurator.isPreCompiledRoot()){
+        	
+        	final File root = new File(this.getServletContext().getRealPath(configurator.getRootDirectory()));
+        	for (final File templateFile: this.findTemplateFile(root)){
+        		LOGGER.debug("Pre compile template: [{}]", templateFile.getAbsolutePath());
+        		Rythm.engine().getTemplate(templateFile);
+        	}
+        	
+        }
+        
         LOGGER.info("Rythm version [{}] setup success.", Rythm.version);
     }
     
@@ -98,5 +111,23 @@ public class RythmViewResolver extends AbstractTemplateViewResolver {
 		classes.add(DateFormat.class);
 		return classes;
     }
+	
+	protected List<File> findTemplateFile(final File root){
+		final List<File> templateFiles = new ArrayList<File>();
+		
+		if (root.isDirectory()){
+			for (final File file: root.listFiles()){
+				
+				if (file.isFile()){
+					templateFiles.add(file);
+				} else {
+					templateFiles.addAll(findTemplateFile(file));
+				}
+				
+			}
+		}
+		
+		return templateFiles;
+	}
 
 }
