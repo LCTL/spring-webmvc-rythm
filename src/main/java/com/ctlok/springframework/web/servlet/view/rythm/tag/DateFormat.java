@@ -20,9 +20,10 @@ public class DateFormat extends JavaTagBase {
 	protected void call(ParameterList params, Body body) {
 		final Date date = (Date) (params.getByName("date") == null ? params.getDefault() : params.getByName("date"));
 		final String format = (String) (params.getByName("format") == null ? "dd-MM-yyyy" : params.getByName("format"));
-		final SimpleDateFormat dateFormat = this.createDateFormat(format);
-		
-		this.p(dateFormat.format(date));
+
+		if (date != null){
+		    this.p(this.createDateFormat(format).format(date));
+		}
 	}
 	
 	protected SimpleDateFormat createDateFormat(final String format){
