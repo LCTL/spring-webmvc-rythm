@@ -12,12 +12,12 @@ import com.greenlaw110.rythm.template.JavaTagBase;
 public class DateFormat extends JavaTagBase {
 	
 	@Override
-	public String getName() {
+	public String __getName() {
 		return "dateFormat";
 	}
 
 	@Override
-	protected void call(ParameterList params, Body body) {
+	protected void call(__ParameterList params, __Body body) {
 		final Date date = (Date) (params.getByName("date") == null ? params.getDefault() : params.getByName("date"));
 		final String format = (String) (params.getByName("format") == null ? "dd-MM-yyyy" : params.getByName("format"));
 

@@ -1,12 +1,10 @@
 package com.ctlok.springframework.web.servlet.view.rythm;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 import org.springframework.cache.CacheManager;
 import org.springframework.web.context.support.WebApplicationObjectSupport;
@@ -14,16 +12,15 @@ import org.springframework.web.context.support.WebApplicationObjectSupport;
 import com.ctlok.springframework.web.servlet.view.rythm.cache.SpringRythmCache;
 import com.ctlok.springframework.web.servlet.view.rythm.log.RythmLoggerFactory;
 import com.ctlok.springframework.web.servlet.view.rythm.variable.ImplicitVariable;
-import com.greenlaw110.rythm.IByteCodeHelper;
-import com.greenlaw110.rythm.IHotswapAgent;
 import com.greenlaw110.rythm.Rythm;
 import com.greenlaw110.rythm.cache.ICacheService;
+import com.greenlaw110.rythm.extension.IByteCodeHelper;
+import com.greenlaw110.rythm.extension.IDurationParser;
+import com.greenlaw110.rythm.extension.ISourceCodeEnhancer;
 import com.greenlaw110.rythm.logger.ILoggerFactory;
 import com.greenlaw110.rythm.resource.ITemplateResourceLoader;
-import com.greenlaw110.rythm.runtime.ITag;
+import com.greenlaw110.rythm.template.ITag;
 import com.greenlaw110.rythm.template.ITemplate;
-import com.greenlaw110.rythm.utils.IDurationParser;
-import com.greenlaw110.rythm.utils.IImplicitRenderArgProvider;
 
 /**
  * @author Lawrence Cheung
@@ -31,21 +28,16 @@ import com.greenlaw110.rythm.utils.IImplicitRenderArgProvider;
  */
 public class RythmConfigurator extends WebApplicationObjectSupport {
     
-	private Boolean autoScanTag;
 	private Boolean cacheInProductionModeOnly;
 	private Boolean compactOutput;
 	private Boolean enableJavaExtensions;
 	private Boolean loadPreCompiled;
-	private Boolean logJavaSource;
 	private Boolean logRenderTime;
 	private Boolean preCompiledRoot;
 	private Boolean noFileWrite;
-	private Boolean refreshOnRender;
 	
 	private String mode;
-	private String reloadMethod;
 	private String rootDirectory;
-	private String tagRootDirectory;
 	private String tempDirectory;
 	private Integer cacheDefaultTTL;
 	
@@ -56,8 +48,6 @@ public class RythmConfigurator extends WebApplicationObjectSupport {
 	private ICacheService cacheService;
 	private ClassLoader classLoader;
 	private IDurationParser durationParser;
-	private FileFilter fileNameFilter;
-	private IHotswapAgent hotswapAgent;
 	private ILoggerFactory loggerFactory;
 	private ITemplateResourceLoader resourceLoader;
 	private IByteCodeHelper byteCodeHelper;
@@ -68,71 +58,54 @@ public class RythmConfigurator extends WebApplicationObjectSupport {
 	private CacheManager cacheManager;
 	private String springCacheName = "RYTHM_TEMPLATE_CACHE";
 
-	public Properties generateConfig() {
-		final Properties props = new Properties();
+	public Map<String, Object> generateConfig() {
+		final Map<String, Object> map = new HashMap<String, Object>();
 		
-		this.setProperties(props, "rythm.tag.autoscan", autoScanTag);
-		this.setProperties(props, "rythm.cache.prodOnly", cacheInProductionModeOnly);
-		this.setProperties(props, "rythm.compactOutput", compactOutput);
-		this.setProperties(props, "rythm.enableJavaExtensions", enableJavaExtensions);
-		this.setProperties(props, "rythm.loadPreCompiled", loadPreCompiled);
-		this.setProperties(props, "rythm.logJavaSource", logJavaSource);
-		this.setProperties(props, "rythm.logRenderTime", logRenderTime);
-		this.setProperties(props, "rythm.noFileWrite", noFileWrite);
-		this.setProperties(props, "rythm.resource.refreshOnRender", refreshOnRender);
+		this.setConfig(map, "cache.prod_only.enabled", cacheInProductionModeOnly);
+		this.setConfig(map, "codegen.compact.enabled", compactOutput);
+		this.setConfig(map, "feature.transformer.enabled", enableJavaExtensions);
+		this.setConfig(map, "engine.load_precompiled.enabled", loadPreCompiled);
+		this.setConfig(map, "log.time.render.enabled", logRenderTime);
+		this.setConfig(map, "engine.file_write.enabled", noFileWrite);
 
-		this.modeConfig(props);
-		this.preCompiledRootConfig(props);
-		this.reloadMethodConfig(props);
-		this.rootDirectoryConfig(props);
-		this.tagRootDirectoryConfig(props);
-		this.setProperties(props, "rythm.tmpDir", tempDirectory);
+		this.modeConfig(map);
+		this.preCompiledRootConfig(map);
+		this.rootDirectoryConfig(map);
+		this.setConfig(map, "home.tmp", tempDirectory);
 		
-		this.setProperties(props, "rythm.cache.defaultTTL", cacheDefaultTTL);
+		this.setConfig(map, "default.cache_ttl", cacheDefaultTTL);
 		
-		this.implicitConfig(props);
+		this.implicitConfig(map);
 		
-		this.cacheServiceConfig(props);
-		this.setProperties(props, "rythm.classLoader.parent", classLoader);
-		this.setProperties(props, "rythm.cache.durationParser", durationParser);
-		this.setProperties(props, "rythm.tag.fileNameFilter", fileNameFilter);
-		this.setProperties(props, "rythm.classLoader.hotswapAgent", hotswapAgent);
-		this.loggerFactoryConfig(props);
-		this.setProperties(props, "rythm.resource.loader", resourceLoader);
-		this.setProperties(props, "rythm.classLoader.byteCodeHelper", byteCodeHelper);
+		this.cacheServiceConfig(map);
+		this.setConfig(map, "engine.class_loader.parent.impl", classLoader);
+		this.setConfig(map, "cache.duration_parser.impl", durationParser);
+		this.loggerFactoryConfig(map);
+		this.setConfig(map, "resource.loader.impl", resourceLoader);
+		this.setConfig(map, "engine.class_loader.bytecode_helper.impl", byteCodeHelper);
 		
-		return props;
+		return map;
 	}
 	
-	protected void setProperties(final Properties props, final String key, final Object value){
+	protected void setConfig(final Map<String, Object> map, final String key, final Object value){
 		if (value != null){
-			props.put(key, value);
-		}
-	}
-	
-	protected void reloadMethodConfig(final Properties props){
-		if (this.reloadMethod != null){
-			if (Rythm.ReloadMethod.RESTART.name().equalsIgnoreCase(this.reloadMethod)){
-				props.put("rythm.reloadMethod", Rythm.ReloadMethod.RESTART);
-			}else if (Rythm.ReloadMethod.V_VERSION.name().equalsIgnoreCase(this.reloadMethod)){
-				props.put("rythm.reloadMethod", Rythm.ReloadMethod.V_VERSION);
-			}
+		    map.put(key, value);
 		}
 	}
 
-	protected void implicitConfig(final Properties props) {
+	protected void implicitConfig(final Map<String, Object> map) {
 		if (this.implicitVariables != null || this.implicitPackages != null) {
-			props.put("rythm.implicitRenderArgProvider",
-					new IImplicitRenderArgProvider() {
+		    map.put("codegen.source_code_enhancer.impl",
+					new ISourceCodeEnhancer() {
 
-						@Override
-						public List<String> getImplicitImportStatements() {
-							final List<String> packages = new ArrayList<String>();
-							if (implicitPackages != null){
-								packages.addAll(implicitPackages);
-							}
-							return packages;
-						}
+        			    @Override
+                        public List<String> imports() {
+                            final List<String> packages = new ArrayList<String>();
+                            if (implicitPackages != null){
+                                packages.addAll(implicitPackages);
+                            }
+                            return packages;
+                        }
 
 						@Override
 						public Map<String, ?> getRenderArgDescriptions() {
@@ -155,7 +128,7 @@ public class RythmConfigurator extends WebApplicationObjectSupport {
 
 							if (implicitVariables != null) {
 								for (final ImplicitVariable implicitVariable : implicitVariables) {
-									template.setRenderArg(
+									template.__setRenderArg(
 											implicitVariable.getName(),
 											implicitVariable.getValue());
 								}
@@ -163,66 +136,56 @@ public class RythmConfigurator extends WebApplicationObjectSupport {
 
 						}
 
+                        @Override
+                        public String sourceCode() {
+                            return null;
+                        }
+
 					});
 		}
 	}
 
-	protected void loggerFactoryConfig(final Properties props) {
+	protected void loggerFactoryConfig(final Map<String, Object> map) {
 		if (this.loggerFactory == null) {
 			this.loggerFactory = new RythmLoggerFactory();
 		}
 
-		props.put("rythm.logger.factory", this.loggerFactory);
+		map.put("log.factory.impl", this.loggerFactory);
 	}
 
-	protected void modeConfig(final Properties props) {
+	protected void modeConfig(final Map<String, Object> map) {
 		if (this.mode != null) {
 			if (Rythm.Mode.prod.name().equalsIgnoreCase(this.mode)) {
-				props.put("rythm.mode", Rythm.Mode.prod);
+			    map.put("engine.mode", Rythm.Mode.prod);
 			} else if (Rythm.Mode.dev.name().equalsIgnoreCase(this.mode)) {
-				props.put("rythm.mode", Rythm.Mode.dev);
+			    map.put("engine.mode", Rythm.Mode.dev);
 			}
 		}
 	}
 
-	protected void rootDirectoryConfig(final Properties props) {
+	protected void rootDirectoryConfig(final Map<String, Object> map) {
 		if (this.rootDirectory != null) {
-			props.put("rythm.root",
+		    map.put("home.template",
 					this.getServletContext().getRealPath(this.rootDirectory));
 		}
 	}
-
-	protected void tagRootDirectoryConfig(final Properties props) {
-		if (this.tagRootDirectory != null) {
-			props.put("rythm.tag.root",
-					this.getServletContext().getRealPath(this.tagRootDirectory));
-		}
-	}
 	
-	protected void cacheServiceConfig(final Properties props){
+	protected void cacheServiceConfig(final Map<String, Object> map){
 	    if (cacheManager == null){
-	        this.setProperties(props, "rythm.cache.service", this.cacheService);
+	        this.setConfig(map, "cache.service.impl", this.cacheService);
 	    }else{
 	        final SpringRythmCache springRythmCache = 
 	                new SpringRythmCache(cacheManager.getCache(this.springCacheName));
 
-	        this.setProperties(props, "rythm.cache.service", springRythmCache);
+	        this.setConfig(map, "cache.service.impl", springRythmCache);
 	    }
 	}
 	
-	protected void preCompiledRootConfig(final Properties props){
+	protected void preCompiledRootConfig(final Map<String, Object> map){
 		if (preCompiledRoot != null && rootDirectory != null){
 			final File root = new File(this.getServletContext().getRealPath(this.rootDirectory));
-			props.put("rythm.preCompiled.root", root);
+			map.put("home.precompiled", root);
 		}
-	}
-
-	public Boolean isAutoScanTag() {
-		return autoScanTag;
-	}
-
-	public void setAutoScanTag(Boolean autoScanTag) {
-		this.autoScanTag = autoScanTag;
 	}
 
 	public Boolean isCacheInProductionModeOnly() {
@@ -265,22 +228,6 @@ public class RythmConfigurator extends WebApplicationObjectSupport {
 		this.noFileWrite = noFileWrite;
 	}
 
-	public Boolean isRefreshOnRender() {
-		return refreshOnRender;
-	}
-
-	public void setRefreshOnRender(Boolean refreshOnRender) {
-		this.refreshOnRender = refreshOnRender;
-	}
-
-	public Boolean isLogJavaSource() {
-		return logJavaSource;
-	}
-
-	public void setLogJavaSource(Boolean logJavaSource) {
-		this.logJavaSource = logJavaSource;
-	}
-
 	public Boolean isLogRenderTime() {
 		return logRenderTime;
 	}
@@ -305,28 +252,12 @@ public class RythmConfigurator extends WebApplicationObjectSupport {
 		this.preCompiledRoot = preCompiledRoot;
 	}
 
-	public String getReloadMethod() {
-		return reloadMethod;
-	}
-
-	public void setReloadMethod(String reloadMethod) {
-		this.reloadMethod = reloadMethod;
-	}
-
 	public String getRootDirectory() {
 		return rootDirectory;
 	}
 
 	public void setRootDirectory(String rootDirectory) {
 		this.rootDirectory = rootDirectory;
-	}
-
-	public String getTagRootDirectory() {
-		return tagRootDirectory;
-	}
-
-	public void setTagRootDirectory(String tagRootDirectory) {
-		this.tagRootDirectory = tagRootDirectory;
 	}
 
 	public String getTempDirectory() {
@@ -391,22 +322,6 @@ public class RythmConfigurator extends WebApplicationObjectSupport {
 
 	public void setDurationParser(IDurationParser durationParser) {
 		this.durationParser = durationParser;
-	}
-
-	public FileFilter getFileNameFilter() {
-		return fileNameFilter;
-	}
-
-	public void setFileNameFilter(FileFilter fileNameFilter) {
-		this.fileNameFilter = fileNameFilter;
-	}
-
-	public IHotswapAgent getHotswapAgent() {
-		return hotswapAgent;
-	}
-
-	public void setHotswapAgent(IHotswapAgent hotswapAgent) {
-		this.hotswapAgent = hotswapAgent;
 	}
 
 	public ILoggerFactory getLoggerFactory() {

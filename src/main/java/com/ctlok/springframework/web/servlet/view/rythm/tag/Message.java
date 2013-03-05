@@ -41,12 +41,12 @@ public class Message extends JavaTagBase {
 	}
 	
 	@Override
-	public String getName() {
+	public String __getName() {
 		return "message";
 	}
 	
 	@Override
-	protected void call(ParameterList params, Body body) {
+	protected void call(__ParameterList params, __Body body) {
 		final String code = (String) (params.getByName("code") == null ? params.getDefault() : params.getByName("code"));
 		final String defaultMessage = (String) params.getByName("default");
 		final String localeString = (String) params.getByName("locale");
@@ -87,11 +87,11 @@ public class Message extends JavaTagBase {
 				defaultLocale : localeResolver.resolveLocale(Helper.getCurrentRequest());
 	}
 	
-	protected Object[] getMessageArgument(final ParameterList params){
+	protected Object[] getMessageArgument(final __ParameterList params){
 		final List<Object> args = new ArrayList<Object>();
 		int i = 0;
-		for (final Iterator<Parameter> iterator = params.iterator(); iterator.hasNext(); i++){
-			final Parameter parameter = iterator.next();
+		for (final Iterator<__Parameter> iterator = params.iterator(); iterator.hasNext(); i++){
+			final __Parameter parameter = iterator.next();
 			if (i > 0 && parameter.name == null){
 				args.add(parameter.value);
 			}

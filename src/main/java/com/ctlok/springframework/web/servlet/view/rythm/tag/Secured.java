@@ -18,20 +18,20 @@ import com.greenlaw110.rythm.template.JavaTagBase;
 public class Secured extends JavaTagBase {
 
     @Override
-    public String getName() {
+    public String __getName() {
         return "secured";
     }
     
     @Override
-    protected void call(ParameterList params, Body body) {
+    protected void call(__ParameterList params, __Body body) {
         
         if (body != null){
         
             final Set<String> authorities = getUserAuthorities();
             
-            for (final Iterator<Parameter> iterator = params.iterator(); iterator.hasNext();){
+            for (final Iterator<__Parameter> iterator = params.iterator(); iterator.hasNext();){
                 
-                final Parameter parameter = iterator.next();
+                final __Parameter parameter = iterator.next();
                 
                 if (authorities.contains(parameter.value)){
                     

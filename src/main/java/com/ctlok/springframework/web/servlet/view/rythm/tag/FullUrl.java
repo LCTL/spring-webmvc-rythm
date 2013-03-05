@@ -8,12 +8,12 @@ import com.greenlaw110.rythm.template.JavaTagBase;
 public class FullUrl extends JavaTagBase {
 
 	@Override
-	public String getName() {
+	public String __getName() {
 		return "fullUrl";
 	}
 
 	@Override
-	protected void call(ParameterList params, Body body) {
+	protected void call(__ParameterList params, __Body body) {
 		
 		final Object obj = params.getDefault();
 		final HttpServletRequest request = Helper.getCurrentRequest();

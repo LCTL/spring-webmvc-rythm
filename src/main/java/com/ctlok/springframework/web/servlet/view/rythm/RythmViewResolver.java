@@ -19,7 +19,7 @@ import com.ctlok.springframework.web.servlet.view.rythm.tag.Url;
 import com.ctlok.springframework.web.servlet.view.rythm.variable.HttpServletRequestVariable;
 import com.ctlok.springframework.web.servlet.view.rythm.variable.ImplicitVariable;
 import com.greenlaw110.rythm.Rythm;
-import com.greenlaw110.rythm.runtime.ITag;
+import com.greenlaw110.rythm.template.ITag;
 
 /**
  * @author Lawrence Cheung
@@ -55,7 +55,7 @@ public class RythmViewResolver extends AbstractTemplateViewResolver {
         
         if (configurator.getTags() != null){
         	for (final ITag tag: configurator.getTags()){
-        		LOGGER.debug("Register tag: [{}]", tag.getName());
+        		LOGGER.debug("Register tag: [{}]", tag.__getName());
         		Rythm.registerTag(tag);
         	}
         }
@@ -72,7 +72,7 @@ public class RythmViewResolver extends AbstractTemplateViewResolver {
         	
         }
         
-        LOGGER.info("Rythm version [{}] setup success.", Rythm.version);
+        LOGGER.info("Rythm version [{}] setup success.", Rythm.engine().version());
     }
     
     protected void setupSpringRythmConfig(){

@@ -12,12 +12,12 @@ import com.greenlaw110.rythm.template.JavaTagBase;
 public class Url extends JavaTagBase {
 
     @Override
-    public String getName() {
+    public String __getName() {
         return "url";
     }
 
     @Override
-    protected void call(ParameterList params, Body body) {
+    protected void call(__ParameterList params, __Body body) {
         final Object obj = params.getDefault();
         final HttpServletRequest request = Helper.getCurrentRequest();
         final String contextPath = request.getContextPath();

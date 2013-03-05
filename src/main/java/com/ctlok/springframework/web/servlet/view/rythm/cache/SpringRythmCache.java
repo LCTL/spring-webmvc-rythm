@@ -73,15 +73,20 @@ public class SpringRythmCache implements ICacheService {
     }
 
     @Override
-    public void clean() {
-        LOGGER.debug("Clear all cache");
+    public void setDefaultTTL(int ttl) {
+        LOGGER.debug("Default TTL: [{}]", ttl);
+        this.defaultTtl = ttl;
+    }
+    
+    @Override
+    public void clear() {
+        LOGGER.debug("clear cache");
         this.cache.clear();
     }
 
     @Override
-    public void setDefaultTTL(int ttl) {
-        LOGGER.debug("Default TTL: [{}]", ttl);
-        this.defaultTtl = ttl;
+    public void startup() {
+     // Nothing to do
     }
 
     @Override
