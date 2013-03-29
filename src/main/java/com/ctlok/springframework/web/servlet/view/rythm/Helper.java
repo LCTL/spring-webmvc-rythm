@@ -12,8 +12,12 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 public class Helper {
 
 	public static HttpServletRequest getCurrentRequest(){
-		final ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-		return attr.getRequest();
+	    try{
+    		final ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+    		return attr.getRequest();
+	    } catch (IllegalStateException e){
+	        return null;
+	    }
 	}
 	
 }

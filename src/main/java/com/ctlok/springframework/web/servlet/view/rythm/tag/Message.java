@@ -83,8 +83,17 @@ public class Message extends JavaTagBase {
 	}
 	
 	protected Locale getDefaultLocale(){
-		return this.localeResolver == null ? 
-				defaultLocale : localeResolver.resolveLocale(Helper.getCurrentRequest());
+	    
+	    Locale result = null;
+	    
+	    if (this.localeResolver == null || Helper.getCurrentRequest() == null){
+	        result = defaultLocale;
+	    } else {
+	        result = localeResolver.resolveLocale(Helper.getCurrentRequest());
+	    }
+	    
+		return result;
+		
 	}
 	
 	protected Object[] getMessageArgument(final __ParameterList params){
