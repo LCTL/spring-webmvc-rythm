@@ -12,7 +12,7 @@ Rythm template engine tutorial: [http://play-rythm-demo.appspot.com/] (http://pl
 
 Dependencies:
 
-* Rythm 1.0.0-20121126 or above
+* Rythm 1.0-b4 or above
 * Servlet 2.5 or above
 * Spring web-mvc 3.1.0 or above
 * Slf4j 1.6.6 or above
@@ -21,16 +21,14 @@ Dependencies:
 
 Maven project follow below step:
 
-1. Download Rythm template engine source.
-2. Run Maven command: mvn install
-3. Download this plugin source.
-4. Also run Maven command: mvn install
-5. Add dependency in your pom.xml:
+1. Download this plugin source.
+2. Also run Maven command: mvn install
+3. Add dependency in your pom.xml:
 
 ```
 <dependency>
     <groupId>com.ctlok</groupId>
-    <artifactId>spring-web-rythm-template</artifactId>
+    <artifactId>spring-webmvc-rythm</artifactId>
     <version>${spring-web-rythm-template.version}</version>
 </dependency>
 ```
