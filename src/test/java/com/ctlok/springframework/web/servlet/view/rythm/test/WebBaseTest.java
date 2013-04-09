@@ -62,6 +62,8 @@ public class WebBaseTest {
         MockHttpServletResponse response = new MockHttpServletResponse();
         
         View view = rythmViewResolver.resolveViewName(template, null);
+        
+        response.setCharacterEncoding("utf-8");
         view.render(model, request, response);
         
         return this.processString(response.getContentAsString());
