@@ -41,7 +41,6 @@ Maven project follow below step:
 <bean id="rythmConfigurator" class="com.ctlok.springframework.web.servlet.view.rythm.RythmConfigurator">
     <property name="mode" value="dev" />
     <property name="rootDirectory" value="/WEB-INF/views/" />
-    <property name="tagRootDirectory" value="/WEB-INF/views/tags/" />
 </bean>
 
 <bean id="rythmViewResolver" class="com.ctlok.springframework.web.servlet.view.rythm.RythmViewResolver">
