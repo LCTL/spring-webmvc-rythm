@@ -1,6 +1,6 @@
 package com.ctlok.springframework.web.servlet.view.rythm.log;
 
-import com.greenlaw110.rythm.logger.ILogger;
+import org.rythmengine.logger.ILogger;
 import org.slf4j.Logger;
 
 /**

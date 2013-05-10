@@ -1,6 +1,6 @@
 package com.ctlok.springframework.web.servlet.view.rythm.cache;
 
-import com.greenlaw110.rythm.extension.ICacheService;
+import org.rythmengine.extension.ICacheService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.Cache;

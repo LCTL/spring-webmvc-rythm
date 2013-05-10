@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Locale;
 
 import org.apache.commons.lang3.LocaleUtils;
+import org.rythmengine.template.JavaTagBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -15,7 +16,6 @@ import org.springframework.context.NoSuchMessageException;
 import org.springframework.web.servlet.LocaleResolver;
 
 import com.ctlok.springframework.web.servlet.view.rythm.Helper;
-import com.greenlaw110.rythm.template.JavaTagBase;
 
 /**
  * @author Lawrence Cheung

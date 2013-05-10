@@ -1,6 +1,6 @@
 package com.ctlok.springframework.web.servlet.view.rythm;
 
-import com.greenlaw110.rythm.Rythm;
+import org.rythmengine.Rythm;
 import org.springframework.web.servlet.view.AbstractTemplateView;
 
 import javax.servlet.http.HttpServletRequest;

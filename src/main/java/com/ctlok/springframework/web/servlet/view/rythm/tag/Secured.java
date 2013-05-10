@@ -4,12 +4,12 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.rythmengine.template.JavaTagBase;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import com.greenlaw110.rythm.template.JavaTagBase;
 
 /**
  * @author Lawrence Cheung

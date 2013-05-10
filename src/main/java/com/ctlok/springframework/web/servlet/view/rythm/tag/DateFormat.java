@@ -1,9 +1,10 @@
 package com.ctlok.springframework.web.servlet.view.rythm.tag;
 
+import org.rythmengine.template.JavaTagBase;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.greenlaw110.rythm.template.JavaTagBase;
 
 /**
  * @author Lawrence Cheung

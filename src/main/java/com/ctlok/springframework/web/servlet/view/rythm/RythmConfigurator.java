@@ -3,9 +3,9 @@ package com.ctlok.springframework.web.servlet.view.rythm;
 import com.ctlok.springframework.web.servlet.view.rythm.cache.SpringRythmCache;
 import com.ctlok.springframework.web.servlet.view.rythm.log.RythmLoggerFactory;
 import com.ctlok.springframework.web.servlet.view.rythm.variable.ImplicitVariable;
-import com.greenlaw110.rythm.Rythm;
-import com.greenlaw110.rythm.extension.*;
-import com.greenlaw110.rythm.template.ITemplate;
+import org.rythmengine.Rythm;
+import org.rythmengine.extension.*;
+import org.rythmengine.template.ITemplate;
 import org.springframework.cache.CacheManager;
 import org.springframework.web.context.support.WebApplicationObjectSupport;
 
