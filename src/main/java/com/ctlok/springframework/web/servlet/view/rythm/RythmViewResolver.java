@@ -1,25 +1,19 @@
 package com.ctlok.springframework.web.servlet.view.rythm;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.ServletContext;
-
+import com.ctlok.springframework.web.servlet.view.rythm.tag.*;
+import com.ctlok.springframework.web.servlet.view.rythm.variable.HttpServletRequestVariable;
+import com.ctlok.springframework.web.servlet.view.rythm.variable.ImplicitVariable;
+import org.rythmengine.Rythm;
+import org.rythmengine.template.ITemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.web.servlet.view.AbstractTemplateViewResolver;
 
-import com.ctlok.springframework.web.servlet.view.rythm.tag.DateFormat;
-import com.ctlok.springframework.web.servlet.view.rythm.tag.FullUrl;
-import com.ctlok.springframework.web.servlet.view.rythm.tag.Message;
-import com.ctlok.springframework.web.servlet.view.rythm.tag.Secured;
-import com.ctlok.springframework.web.servlet.view.rythm.tag.Url;
-import com.ctlok.springframework.web.servlet.view.rythm.variable.HttpServletRequestVariable;
-import com.ctlok.springframework.web.servlet.view.rythm.variable.ImplicitVariable;
-import com.greenlaw110.rythm.Rythm;
-import com.greenlaw110.rythm.template.ITag;
+import javax.servlet.ServletContext;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Lawrence Cheung
@@ -54,9 +48,11 @@ public class RythmViewResolver extends AbstractTemplateViewResolver {
         Rythm.init(configurator.generateConfig());
         
         if (configurator.getTags() != null){
-        	for (final ITag tag: configurator.getTags()){
+        	for (final ITemplate tag: configurator.getTags()){
         		LOGGER.debug("Register tag: [{}]", tag.__getName());
-        		Rythm.registerTag(tag);
+        		//deprecated from rythm-b7
+                //Rythm.registerTag(tag);
+                Rythm.engine().registerTemplate(tag);
         	}
         }
         
@@ -90,20 +86,20 @@ public class RythmViewResolver extends AbstractTemplateViewResolver {
     
     protected void configBuildInTag(){
     	if (configurator.getTags() == null){
-    		configurator.setTags(new ArrayList<ITag>());
+    		configurator.setTags(new ArrayList<ITemplate>());
     	}
     	
     	final AutowireCapableBeanFactory factory = this.getApplicationContext().getAutowireCapableBeanFactory();
-    	for (final Class<? extends ITag> clazz: this.defaultTagClasses()){
+    	for (final Class<? extends ITemplate> clazz: this.defaultTagClasses()){
     		final Object tag = factory.autowire(
     				clazz, AutowireCapableBeanFactory.AUTOWIRE_CONSTRUCTOR, false);
     		
-    		configurator.getTags().add((ITag) tag);
+    		configurator.getTags().add((ITemplate) tag);
     	}
     }
  
-	protected List<Class<? extends ITag>> defaultTagClasses(){
-		List<Class<? extends ITag>> classes = new ArrayList<Class<? extends ITag>>();
+	protected List<Class<? extends ITemplate>> defaultTagClasses(){
+		List<Class<? extends ITemplate>> classes = new ArrayList<Class<? extends ITemplate>>();
 		classes.add(Url.class);
 		classes.add(FullUrl.class);
 		classes.add(Message.class);

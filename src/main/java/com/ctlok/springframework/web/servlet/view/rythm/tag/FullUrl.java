@@ -3,7 +3,8 @@ package com.ctlok.springframework.web.servlet.view.rythm.tag;
 import javax.servlet.http.HttpServletRequest;
 
 import com.ctlok.springframework.web.servlet.view.rythm.Helper;
-import com.greenlaw110.rythm.template.JavaTagBase;
+import org.rythmengine.template.ITag;
+import org.rythmengine.template.JavaTagBase;
 
 public class FullUrl extends JavaTagBase {
 
@@ -13,7 +14,7 @@ public class FullUrl extends JavaTagBase {
 	}
 
 	@Override
-	protected void call(__ParameterList params, __Body body) {
+	protected void call(ITag.__ParameterList params, __Body body) {
 		
 		final Object obj = params.getDefault();
 		final HttpServletRequest request = Helper.getCurrentRequest();
