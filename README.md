@@ -12,7 +12,7 @@ Rythm template engine tutorial: [http://play-rythm-demo.appspot.com/] (http://pl
 
 Dependencies:
 
-* Rythm 1.0-b4 or above
+* Rythm 1.0-b9 or above
 * Servlet 2.5 or above
 * Spring web-mvc 3.1.0 or above
 * Slf4j 1.6.6 or above
@@ -154,7 +154,7 @@ Dependencies:
 
 ***
 
-`@secured` tag help you check current user is it has role and display conten:
+`@secured` tag help you to check current user is it has role and display content:
 
 ```
 @secured("ROLE_ADMIN"){
