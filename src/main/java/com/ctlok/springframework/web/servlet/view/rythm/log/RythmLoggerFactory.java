@@ -1,13 +1,12 @@
 package com.ctlok.springframework.web.servlet.view.rythm.log;
 
-import org.slf4j.LoggerFactory;
 
-import com.greenlaw110.rythm.logger.ILogger;
-import com.greenlaw110.rythm.logger.ILoggerFactory;
+import org.rythmengine.extension.ILoggerFactory;
+import org.rythmengine.logger.ILogger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Lawrence Cheung
- *
  */
 public class RythmLoggerFactory implements ILoggerFactory {
 

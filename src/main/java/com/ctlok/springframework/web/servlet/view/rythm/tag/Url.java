@@ -3,7 +3,7 @@ package com.ctlok.springframework.web.servlet.view.rythm.tag;
 import javax.servlet.http.HttpServletRequest;
 
 import com.ctlok.springframework.web.servlet.view.rythm.Helper;
-import com.greenlaw110.rythm.template.JavaTagBase;
+import org.rythmengine.template.JavaTagBase;
 
 /**
  * @author Lawrence Cheung
