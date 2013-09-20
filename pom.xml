@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>   
 	<groupId>com.ctlok</groupId>
 	<artifactId>spring-webmvc-rythm</artifactId>
-	<version>1.3.1</version>
+	<version>1.3.2-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Rythm Template Engine for Spring</name>
 	<url>https://github.com/lawrence0819/spring-web-rythm-template</url>
@@ -20,7 +20,7 @@
 		<url>https://github.com/lawrence0819/spring-web-rythm-template</url>
         <connection>scm:git:git://github.com/lawrence0819/spring-web-rythm-template.git</connection>
         <developerConnection>scm:git:git@github.com:lawrence0819/spring-web-rythm-template.git</developerConnection>
-	  <tag>spring-webmvc-rythm-1.3.1</tag>
+	  <tag>HEAD</tag>
   </scm>
     
     <distributionManagement>
