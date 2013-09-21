@@ -1,19 +1,26 @@
 package com.ctlok.springframework.web.servlet.view.rythm;
 
-import com.ctlok.springframework.web.servlet.view.rythm.cache.SpringRythmCache;
-import com.ctlok.springframework.web.servlet.view.rythm.log.RythmLoggerFactory;
-import com.ctlok.springframework.web.servlet.view.rythm.variable.ImplicitVariable;
-import org.rythmengine.Rythm;
-import org.rythmengine.extension.*;
-import org.rythmengine.template.ITemplate;
-import org.springframework.cache.CacheManager;
-import org.springframework.web.context.support.WebApplicationObjectSupport;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.rythmengine.Rythm;
+import org.rythmengine.extension.IByteCodeHelper;
+import org.rythmengine.extension.ICacheService;
+import org.rythmengine.extension.IDurationParser;
+import org.rythmengine.extension.ILoggerFactory;
+import org.rythmengine.extension.ISourceCodeEnhancer;
+import org.rythmengine.extension.ITemplateResourceLoader;
+import org.rythmengine.template.ITemplate;
+import org.springframework.cache.CacheManager;
+import org.springframework.web.context.support.WebApplicationObjectSupport;
+
+import com.ctlok.springframework.web.servlet.view.rythm.cache.SpringRythmCache;
+import com.ctlok.springframework.web.servlet.view.rythm.log.RythmLoggerFactory;
+import com.ctlok.springframework.web.servlet.view.rythm.tag.FileBasedTag;
+import com.ctlok.springframework.web.servlet.view.rythm.variable.ImplicitVariable;
 
 /**
  * @author Lawrence Cheung
@@ -36,6 +43,7 @@ public class RythmConfigurator extends WebApplicationObjectSupport {
     private List<String> implicitPackages;
     private List<ImplicitVariable> implicitVariables;
     private List<ITemplate> tags;
+    private List<FileBasedTag> fileBasedTags;
 
     private ICacheService cacheService;
     private ClassLoader classLoader;
@@ -354,6 +362,14 @@ public class RythmConfigurator extends WebApplicationObjectSupport {
 
     public void setSpringCacheName(String springCacheName) {
         this.springCacheName = springCacheName;
+    }
+
+    public List<FileBasedTag> getFileBasedTags() {
+        return fileBasedTags;
+    }
+
+    public void setFileBasedTags(List<FileBasedTag> fileBasedTags) {
+        this.fileBasedTags = fileBasedTags;
     }
 
 }

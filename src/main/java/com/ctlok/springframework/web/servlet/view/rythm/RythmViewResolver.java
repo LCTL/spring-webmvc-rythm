@@ -1,8 +1,12 @@
 package com.ctlok.springframework.web.servlet.view.rythm;
 
-import com.ctlok.springframework.web.servlet.view.rythm.tag.*;
-import com.ctlok.springframework.web.servlet.view.rythm.variable.HttpServletRequestVariable;
-import com.ctlok.springframework.web.servlet.view.rythm.variable.ImplicitVariable;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.ServletContext;
+
 import org.rythmengine.Rythm;
 import org.rythmengine.template.ITemplate;
 import org.slf4j.Logger;
@@ -10,10 +14,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.web.servlet.view.AbstractTemplateViewResolver;
 
-import javax.servlet.ServletContext;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import com.ctlok.springframework.web.servlet.view.rythm.tag.CookieValue;
+import com.ctlok.springframework.web.servlet.view.rythm.tag.DateFormat;
+import com.ctlok.springframework.web.servlet.view.rythm.tag.FileBasedTag;
+import com.ctlok.springframework.web.servlet.view.rythm.tag.FileBasedTagProxy;
+import com.ctlok.springframework.web.servlet.view.rythm.tag.FullUrl;
+import com.ctlok.springframework.web.servlet.view.rythm.tag.Message;
+import com.ctlok.springframework.web.servlet.view.rythm.tag.Secured;
+import com.ctlok.springframework.web.servlet.view.rythm.tag.Url;
+import com.ctlok.springframework.web.servlet.view.rythm.variable.HttpServletRequestVariable;
+import com.ctlok.springframework.web.servlet.view.rythm.variable.ImplicitVariable;
 
 /**
  * @author Lawrence Cheung
@@ -54,6 +64,24 @@ public class RythmViewResolver extends AbstractTemplateViewResolver {
                 //Rythm.registerTag(tag);
                 Rythm.engine().registerTemplate(tag);
         	}
+        }
+        
+        try{
+        
+            for (final FileBasedTag fileBasedTag: configurator.getFileBasedTags()){
+    
+                final ITemplate tag = new FileBasedTagProxy(fileBasedTag);
+                
+                LOGGER.debug("Register file based tag: [{}]", tag.__getName());
+
+                Rythm.engine().registerTemplate(tag);
+    
+            }
+        
+        } catch (IOException e){
+            
+            throw new IllegalStateException(e);
+            
         }
         
         if (configurator.isPreCompiledRoot() != null 
