@@ -19,17 +19,13 @@ Dependencies:
 
 ***
 
-Maven project follow below step:
-
-1. Download this plugin source.
-2. Also run Maven command: mvn install
-3. Add dependency in your pom.xml:
+Maven:
 
 ```
 <dependency>
     <groupId>com.ctlok</groupId>
     <artifactId>spring-webmvc-rythm</artifactId>
-    <version>${spring-web-rythm-template.version}</version>
+    <version>1.3.6</version>
 </dependency>
 ```
 
