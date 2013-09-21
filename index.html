@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Spring-webmvc-rythm by lawrence0819</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Spring-webmvc-rythm</h1>
+        <h2>Rythm Template Engine for Spring</h2>
+        <a href="https://github.com/lawrence0819/spring-webmvc-rythm" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a name="rythm-template-engine-for-spring-web" class="anchor" href="#rythm-template-engine-for-spring-web"><span class="octicon octicon-link"></span></a>Rythm Template Engine for Spring Web</h1>
+
+<p>This is a plugin for Spring to adapt Rythm template engine. 
+Rythm template engine is a high performance templates engine which is multiple times faster than groovy, velocity and freemarker.</p>
+
+<p>Rythm template engine source: <a href="https://github.com/greenlaw110/Rythm">https://github.com/greenlaw110/Rythm</a></p>
+
+<p>Rythm template engine tutorial: <a href="http://play-rythm-demo.appspot.com/">http://play-rythm-demo.appspot.com/</a></p>
+
+<h1>
+<a name="how-to-integrate-with-spring-web" class="anchor" href="#how-to-integrate-with-spring-web"><span class="octicon octicon-link"></span></a>How to integrate with Spring Web</h1>
+
+<p>Dependencies:</p>
+
+<ul>
+<li>Rythm 1.0-b9 or above</li>
+<li>Servlet 2.5 or above</li>
+<li>Spring web-mvc 3.1.0 or above</li>
+<li>Slf4j 1.6.6 or above</li>
+</ul><hr><p>Maven:</p>
+
+<pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;com.ctlok&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-webmvc-rythm&lt;/artifactId&gt;
+    &lt;version&gt;1.3.6&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+
+<hr><h2>
+<a name="spring-config-example" class="anchor" href="#spring-config-example"><span class="octicon octicon-link"></span></a>Spring config example</h2>
+
+<pre><code>&lt;bean id="rythmConfigurator" class="com.ctlok.springframework.web.servlet.view.rythm.RythmConfigurator"&gt;
+    &lt;property name="mode" value="dev" /&gt;
+    &lt;property name="rootDirectory" value="/WEB-INF/views/" /&gt;
+&lt;/bean&gt;
+
+&lt;bean id="rythmViewResolver" class="com.ctlok.springframework.web.servlet.view.rythm.RythmViewResolver"&gt;
+    &lt;constructor-arg&gt;
+        &lt;ref bean="rythmConfigurator" /&gt;
+    &lt;/constructor-arg&gt;
+    &lt;property name="prefix" value="/WEB-INF/views/" /&gt;
+    &lt;property name="suffix" value=".html" /&gt;
+&lt;/bean&gt;
+</code></pre>
+
+<h3>
+<a name="support-spring-internationalization-i18n" class="anchor" href="#support-spring-internationalization-i18n"><span class="octicon octicon-link"></span></a>Support Spring Internationalization (I18N)</h3>
+
+<pre><code>&lt;bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" /&gt;
+
+&lt;bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"&gt;
+    &lt;property name="interceptors"&gt;
+        &lt;ref bean="localeChangeInterceptor" /&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;
+
+&lt;bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource"&gt;
+    &lt;property name="basename" value="language/messages" /&gt;
+    &lt;property name="defaultEncoding" value="UTF-8" /&gt;
+&lt;/bean&gt;
+
+&lt;bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver"&gt;
+    &lt;property name="defaultLocale" value="en" /&gt;
+    &lt;property name="cookieName" value="locale" /&gt;
+    &lt;property name="cookieMaxAge" value="31536000" /&gt;
+&lt;/bean&gt;
+
+&lt;bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor"&gt;
+    &lt;property name="paramName" value="lang" /&gt;
+&lt;/bean&gt;
+</code></pre>
+
+<hr><p><code>@message</code> tag help you to get current locale message in template: </p>
+
+<pre><code>&lt;p&gt;@message("message.code")&lt;/p&gt;
+&lt;p&gt;@message("message.code", "arg0", "arg1")&lt;/p&gt;
+&lt;p&gt;@message({code: "message.code.null", default: "Output me if code not found"})&lt;/p&gt;
+&lt;p&gt;@message({code: "message.code.null", default: "Output me if code not found", "arg0", "arg1"})&lt;/p&gt;
+&lt;p&gt;@message({code: "message.code", locale: "fr"})&lt;/p&gt;
+&lt;p&gt;@message({code: "message.code", locale: "fr", "arg0", "arg1"})&lt;/p&gt;
+&lt;p&gt;@message({code: "message.code", default: "Output me if code not found", locale: "fr"})&lt;/p&gt;
+&lt;p&gt;@message({code: "message.code", default: "Output me if code not found", locale: "fr", "arg0", "arg1"})&lt;/p&gt;
+</code></pre>
+
+<h3>
+<a name="support-spring-cache-in-template" class="anchor" href="#support-spring-cache-in-template"><span class="octicon octicon-link"></span></a>Support Spring cache in template</h3>
+
+<pre><code>&lt;bean id="cacheManagerFactory" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"&gt;
+    &lt;property name="configLocation" value="classpath:ehcache.xml" /&gt;
+&lt;/bean&gt;
+
+&lt;bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager"&gt;
+    &lt;property name="cacheManager" ref="cacheManagerFactory" /&gt;
+&lt;/bean&gt;
+
+&lt;bean id="rythmConfigurator" class="com.ctlok.springframework.web.servlet.view.rythm.RythmConfigurator"&gt;
+    &lt;property name="mode" value="dev" /&gt;
+    &lt;property name="rootDirectory" value="/WEB-INF/views/" /&gt;
+    &lt;property name="tagRootDirectory" value="/WEB-INF/views/tags/" /&gt;
+    &lt;property name="cacheInProductionModeOnly" value="false" /&gt;
+    &lt;property name="cacheManager" ref="cacheManager" /&gt;
+    &lt;property name="springCacheName" value="RYTHM_CACHE" /&gt;
+&lt;/bean&gt;
+</code></pre>
+
+<p>ehcache.xml:</p>
+
+<pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;ehcache&gt;
+
+    &lt;diskStore path="java.io.tmpdir" /&gt;
+
+    &lt;defaultCache 
+        maxElementsInMemory="300" eternal="false" timeToIdleSeconds="500"
+        timeToLiveSeconds="500" overflowToDisk="true" /&gt;
+
+    &lt;cache name="RYTHM_CACHE" maxElementsInMemory="300" eternal="false" timeToIdleSeconds="500"
+        timeToLiveSeconds="3600" overflowToDisk="false" /&gt;
+
+&lt;/ehcache&gt;
+</code></pre>
+
+<p>How to use cache in Rythm template: <a href="http://play-rythm-demo.appspot.com/demo/testcache">http://play-rythm-demo.appspot.com/demo/testcache</a></p>
+
+<h3>
+<a name="support-spring-security-optional" class="anchor" href="#support-spring-security-optional"><span class="octicon octicon-link"></span></a>Support Spring Security (Optional)</h3>
+
+<p>Dependencies:</p>
+
+<ul>
+<li>Spring Security Core 3.1.0 or above</li>
+</ul><pre><code>&lt;authentication-manager&gt;
+    &lt;authentication-provider&gt;
+        &lt;user-service&gt;
+            &lt;user name="admin" password="admin" authorities="ROLE_ADMIN, ROLE_USER" /&gt;
+            &lt;user name="user" password="user" authorities="ROLE_USER" /&gt;
+            &lt;user name="anonymous" password="anonymous" authorities="ROLE_ANONYMOUS" /&gt;
+        &lt;/user-service&gt;
+    &lt;/authentication-provider&gt;
+&lt;/authentication-manager&gt; 
+</code></pre>
+
+<hr><p><code>@secured</code> tag help you to check current user is it has role and display content:</p>
+
+<pre><code>@secured("ROLE_ADMIN"){
+    admin content
+}
+
+@secured("ROLE_USER"){
+    user content
+}
+
+@secured("ROLE_USER", "ROLE_ANONYMOUS"){
+    anonymous content
+}
+</code></pre>
+
+<h2>
+<a name="build-in-tag" class="anchor" href="#build-in-tag"><span class="octicon octicon-link"></span></a>Build in Tag</h2>
+
+<p><code>@url</code> tag help you to add context path before resource path:</p>
+
+<pre><code>@url("/javascripts/jQuery.min.js")
+</code></pre>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/lawrence0819/spring-webmvc-rythm/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/lawrence0819/spring-webmvc-rythm/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/lawrence0819/spring-webmvc-rythm"></a> is maintained by <a href="https://github.com/lawrence0819">lawrence0819</a>.</p>
+
+          <p>This page was generated by <a href="pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
