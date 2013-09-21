@@ -105,6 +105,7 @@ public class RythmViewResolver extends AbstractTemplateViewResolver {
 		classes.add(Message.class);
 		classes.add(Secured.class);
 		classes.add(DateFormat.class);
+		classes.add(CookieValue.class);
 		return classes;
     }
 	
