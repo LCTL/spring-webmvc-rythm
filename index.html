@@ -1,34 +1,37 @@
 <!DOCTYPE html>
 <html>
+
   <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Spring-webmvc-rythm : Rythm Template Engine for Spring" />
 
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
 
-    <title>Spring-webmvc-rythm by lawrence0819</title>
+    <title>Spring-webmvc-rythm</title>
   </head>
 
   <body>
-    <header>
-      <div class="inner">
-        <h1>Spring-webmvc-rythm</h1>
-        <h2>Rythm Template Engine for Spring</h2>
-        <a href="https://github.com/lawrence0819/spring-webmvc-rythm" class="button"><small>View project on</small>GitHub</a>
-      </div>
-    </header>
 
-    <div id="content-wrapper">
-      <div class="inner clearfix">
-        <section id="main-content">
-          <h1>
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/lawrence0819/spring-webmvc-rythm">View on GitHub</a>
+
+          <h1 id="project_title">Spring-webmvc-rythm</h1>
+          <h2 id="project_tagline">Rythm Template Engine for Spring</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/lawrence0819/spring-webmvc-rythm/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/lawrence0819/spring-webmvc-rythm/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
 <a name="rythm-template-engine-for-spring-web" class="anchor" href="#rythm-template-engine-for-spring-web"><span class="octicon octicon-link"></span></a>Rythm Template Engine for Spring Web</h1>
 
 <p>This is a plugin for Spring to adapt Rythm template engine. 
@@ -38,17 +41,19 @@ Rythm template engine is a high performance templates engine which is multiple t
 
 <p>Rythm template engine tutorial: <a href="http://play-rythm-demo.appspot.com/">http://play-rythm-demo.appspot.com/</a></p>
 
-<h1>
-<a name="how-to-integrate-with-spring-web" class="anchor" href="#how-to-integrate-with-spring-web"><span class="octicon octicon-link"></span></a>How to integrate with Spring Web</h1>
-
-<p>Dependencies:</p>
+<h2>
+<a name="dependencies" class="anchor" href="#dependencies"><span class="octicon octicon-link"></span></a>Dependencies:</h2>
 
 <ul>
 <li>Rythm 1.0-b9 or above</li>
 <li>Servlet 2.5 or above</li>
 <li>Spring web-mvc 3.1.0 or above</li>
 <li>Slf4j 1.6.6 or above</li>
-</ul><hr><p>Maven:</p>
+</ul><h2>
+<a name="integrate-with-spring-web" class="anchor" href="#integrate-with-spring-web"><span class="octicon octicon-link"></span></a>Integrate with Spring Web</h2>
+
+<h3>
+<a name="maven" class="anchor" href="#maven"><span class="octicon octicon-link"></span></a>Maven:</h3>
 
 <pre><code>&lt;dependency&gt;
     &lt;groupId&gt;com.ctlok&lt;/groupId&gt;
@@ -57,8 +62,20 @@ Rythm template engine is a high performance templates engine which is multiple t
 &lt;/dependency&gt;
 </code></pre>
 
-<hr><h2>
-<a name="spring-config-example" class="anchor" href="#spring-config-example"><span class="octicon octicon-link"></span></a>Spring config example</h2>
+<h3>
+<a name="java-project" class="anchor" href="#java-project"><span class="octicon octicon-link"></span></a>Java Project:</h3>
+
+<ol>
+<li>Download latest release: <a href="http://search.maven.org/remotecontent?filepath=com/ctlok/spring-webmvc-rythm/1.3.6/spring-webmvc-rythm-1.3.6.jar">http://search.maven.org/remotecontent?filepath=com/ctlok/spring-webmvc-rythm/1.3.6/spring-webmvc-rythm-1.3.6.jar</a>
+</li>
+<li>Download Spring Framework with web mvc: <a href="http://projects.spring.io/spring-framework/">http://projects.spring.io/spring-framework/</a>
+</li>
+<li>Download Slf4j: <a href="http://www.slf4j.org/">http://www.slf4j.org/</a>
+</li>
+<li>Download logback: <a href="http://logback.qos.ch/download.html">http://logback.qos.ch/download.html</a>
+</li>
+</ol><h3>
+<a name="spring-config-example" class="anchor" href="#spring-config-example"><span class="octicon octicon-link"></span></a>Spring config example</h3>
 
 <pre><code>&lt;bean id="rythmConfigurator" class="com.ctlok.springframework.web.servlet.view.rythm.RythmConfigurator"&gt;
     &lt;property name="mode" value="dev" /&gt;
@@ -74,8 +91,8 @@ Rythm template engine is a high performance templates engine which is multiple t
 &lt;/bean&gt;
 </code></pre>
 
-<h3>
-<a name="support-spring-internationalization-i18n" class="anchor" href="#support-spring-internationalization-i18n"><span class="octicon octicon-link"></span></a>Support Spring Internationalization (I18N)</h3>
+<h2>
+<a name="support-spring-internationalization-i18n" class="anchor" href="#support-spring-internationalization-i18n"><span class="octicon octicon-link"></span></a>Support Spring Internationalization (I18N)</h2>
 
 <pre><code>&lt;bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" /&gt;
 
@@ -113,8 +130,8 @@ Rythm template engine is a high performance templates engine which is multiple t
 &lt;p&gt;@message({code: "message.code", default: "Output me if code not found", locale: "fr", "arg0", "arg1"})&lt;/p&gt;
 </code></pre>
 
-<h3>
-<a name="support-spring-cache-in-template" class="anchor" href="#support-spring-cache-in-template"><span class="octicon octicon-link"></span></a>Support Spring cache in template</h3>
+<h2>
+<a name="support-spring-cache-in-template" class="anchor" href="#support-spring-cache-in-template"><span class="octicon octicon-link"></span></a>Support Spring cache in template</h2>
 
 <pre><code>&lt;bean id="cacheManagerFactory" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"&gt;
     &lt;property name="configLocation" value="classpath:ehcache.xml" /&gt;
@@ -153,8 +170,8 @@ Rythm template engine is a high performance templates engine which is multiple t
 
 <p>How to use cache in Rythm template: <a href="http://play-rythm-demo.appspot.com/demo/testcache">http://play-rythm-demo.appspot.com/demo/testcache</a></p>
 
-<h3>
-<a name="support-spring-security-optional" class="anchor" href="#support-spring-security-optional"><span class="octicon octicon-link"></span></a>Support Spring Security (Optional)</h3>
+<h2>
+<a name="support-spring-security-optional" class="anchor" href="#support-spring-security-optional"><span class="octicon octicon-link"></span></a>Support Spring Security (Optional)</h2>
 
 <p>Dependencies:</p>
 
@@ -189,29 +206,89 @@ Rythm template engine is a high performance templates engine which is multiple t
 <h2>
 <a name="build-in-tag" class="anchor" href="#build-in-tag"><span class="octicon octicon-link"></span></a>Build in Tag</h2>
 
-<p><code>@url</code> tag help you to add context path before resource path:</p>
+<p>Use <code>@url</code> tag to add context path before resource path:</p>
 
-<pre><code>@url("/javascripts/jQuery.min.js")
+<pre><code>&lt;script type="text/javascript" src="@url("/javascripts/jQuery.min.js")"&gt;&lt;/script&gt;
+
+Result: &lt;script type="text/javascript" src="my-app/javascripts/jQuery.min.js"&gt;&lt;/script&gt;
 </code></pre>
-        </section>
 
-        <aside id="sidebar">
-          <a href="https://github.com/lawrence0819/spring-webmvc-rythm/zipball/master" class="button">
-            <small>Download</small>
-            .zip file
-          </a>
-          <a href="https://github.com/lawrence0819/spring-webmvc-rythm/tarball/master" class="button">
-            <small>Download</small>
-            .tar.gz file
-          </a>
+<p>Use <code>@fullUrl</code> tag to print current server full URL path with resource:</p>
 
-          <p class="repo-owner"><a href="https://github.com/lawrence0819/spring-webmvc-rythm"></a> is maintained by <a href="https://github.com/lawrence0819">lawrence0819</a>.</p>
+<pre><code>&lt;img src="@fullUrl("/images/xyz.png")" /&gt;
 
-          <p>This page was generated by <a href="pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
-        </aside>
-      </div>
+Result: &lt;img src="http://pro.ctlok.com/images/xyz.png" /&gt;
+</code></pre>
+
+<p>Use <code>@dateFormat</code> tag to print formatted date string:</p>
+
+<pre><code>@dateFormat(user.getCreateDate(), format: "dd-MM-yyyy HH:mm")
+
+Result: 22-09-2013 14:28
+</code></pre>
+
+<p>Use <code>@cookieValue</code> tag to print cookie or assign to variable:</p>
+
+<pre><code>@cookieValue("mode").assign("mode")
+</code></pre>
+
+<h2>
+<a name="custom-tag" class="anchor" href="#custom-tag"><span class="octicon octicon-link"></span></a>Custom Tag</h2>
+
+<p>spring-webmvc-rythm support 2 type custom tag.</p>
+
+<h3>
+<a name="java-based-tag" class="anchor" href="#java-based-tag"><span class="octicon octicon-link"></span></a>Java Based Tag</h3>
+
+<ol>
+<li>Create class inherit from org.rythmengine.template.JavaTagBase</li>
+<li>Override <code>__getName()</code> method and return your tag name</li>
+<li>Implement <code>call(__ParameterList params, __Body body)</code>
+</li>
+<li>Config com.ctlok.springframework.web.servlet.view.rythm.RythmConfigurator</li>
+</ol><pre><code>&lt;bean id="rythmConfigurator" class="com.ctlok.springframework.web.servlet.view.rythm.RythmConfigurator"&gt;
+    &lt;property name="mode" value="dev" /&gt;
+    &lt;property name="rootDirectory" value="/WEB-INF/views/" /&gt;
+    &lt;property name="tags"&gt;
+        &lt;list&gt;
+            &lt;bean class="com.xyz.tags.HelloWorld" /&gt;
+        &lt;/list&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;
+</code></pre>
+
+<h3>
+<a name="file-based-tag" class="anchor" href="#file-based-tag"><span class="octicon octicon-link"></span></a>File Based Tag</h3>
+
+<ol>
+<li>Create template file</li>
+<li>Add template file to classpath</li>
+<li>Config com.ctlok.springframework.web.servlet.view.rythm.RythmConfigurator</li>
+</ol><pre><code>&lt;bean id="rythmConfigurator" class="com.ctlok.springframework.web.servlet.view.rythm.RythmConfigurator"&gt;
+    &lt;property name="mode" value="dev" /&gt;
+    &lt;property name="rootDirectory" value="/WEB-INF/views/" /&gt;
+    &lt;property name="fileBasedTags"&gt;
+        &lt;list&gt;
+            &lt;bean class="com.ctlok.springframework.web.servlet.view.rythm.tag.FileBasedTag"&gt;
+                &lt;property name="resource" value="classpath:custom_tags/helloWorld.html" /&gt;
+                &lt;property name="tagName" value="helloWorld" /&gt;
+            &lt;/bean&gt;
+        &lt;/list&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;
+</code></pre>
+      </section>
     </div>
 
-  
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Spring-webmvc-rythm maintained by <a href="https://github.com/lawrence0819">lawrence0819</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
   </body>
 </html>
