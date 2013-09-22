@@ -9,6 +9,9 @@ import java.util.List;
 import org.rythmengine.Rythm;
 import org.rythmengine.template.ITemplate;
 import org.rythmengine.template.JavaTagBase;
+import org.springframework.core.io.Resource;
+
+import com.ctlok.springframework.web.servlet.view.rythm.Helper;
 
 /**
  * 
@@ -22,14 +25,15 @@ public class FileBasedTagProxy extends JavaTagBase {
     
     public FileBasedTagProxy(final FileBasedTag fileBasedTag) throws IOException{
         
-        this.file = fileBasedTag.getResource().getFile();
-        this.tagName = fileBasedTag.getTagName() == null ? getDefaultTagName(file) : fileBasedTag.getTagName();
-        
+        this.file = Helper.copyResourceToTempDirectory(fileBasedTag.getResource());
+        this.tagName = fileBasedTag.getTagName() == null ? 
+                getDefaultTagName(fileBasedTag.getResource()) : fileBasedTag.getTagName();
+                
     }
     
-    private String getDefaultTagName(final File file){
+    private String getDefaultTagName(final Resource resource){
         
-        final String templateFileName = file.getName();
+        final String templateFileName = resource.getFilename();
         final int indexOfExt = templateFileName.lastIndexOf(".");
         
         return indexOfExt == -1 ? templateFileName : templateFileName.substring(0, indexOfExt);

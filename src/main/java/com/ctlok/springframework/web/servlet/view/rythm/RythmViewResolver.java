@@ -71,7 +71,7 @@ public class RythmViewResolver extends AbstractTemplateViewResolver {
             for (final FileBasedTag fileBasedTag: configurator.getFileBasedTags()){
     
                 final ITemplate tag = new FileBasedTagProxy(fileBasedTag);
-                
+
                 LOGGER.debug("Register file based tag: [{}]", tag.__getName());
 
                 Rythm.engine().registerTemplate(tag);
@@ -83,6 +83,8 @@ public class RythmViewResolver extends AbstractTemplateViewResolver {
             throw new IllegalStateException(e);
             
         }
+        
+        
         
         if (configurator.isPreCompiledRoot() != null 
         		&& configurator.getRootDirectory() != null
