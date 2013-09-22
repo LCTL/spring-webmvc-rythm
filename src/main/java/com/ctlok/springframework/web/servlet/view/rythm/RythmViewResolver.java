@@ -66,24 +66,27 @@ public class RythmViewResolver extends AbstractTemplateViewResolver {
         	}
         }
         
-        try{
+        if (configurator.getFileBasedTags() != null){
         
-            for (final FileBasedTag fileBasedTag: configurator.getFileBasedTags()){
+            try{
+            
+                for (final FileBasedTag fileBasedTag: configurator.getFileBasedTags()){
+        
+                    final ITemplate tag = new FileBasedTagProxy(fileBasedTag);
     
-                final ITemplate tag = new FileBasedTagProxy(fileBasedTag);
-
-                LOGGER.debug("Register file based tag: [{}]", tag.__getName());
-
-                Rythm.engine().registerTemplate(tag);
+                    LOGGER.debug("Register file based tag: [{}]", tag.__getName());
     
+                    Rythm.engine().registerTemplate(tag);
+        
+                }
+            
+            } catch (IOException e){
+                
+                throw new IllegalStateException(e);
+                
             }
         
-        } catch (IOException e){
-            
-            throw new IllegalStateException(e);
-            
         }
-        
         
         
         if (configurator.isPreCompiledRoot() != null 
