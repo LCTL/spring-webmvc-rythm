@@ -56,6 +56,7 @@
         <dependency.rythm.version>1.0-b9</dependency.rythm.version>
         <dependency.slf4j-api.version>1.6.6</dependency.slf4j-api.version>
         <dependency.slf4j-impl.version>1.6.6</dependency.slf4j-impl.version>
+        <dependency.commons-lang3.version>3.1</dependency.commons-lang3.version>
 
         <dependency.junit.version>4.10</dependency.junit.version>
         <dependency.logback.version>1.0.6</dependency.logback.version>
@@ -159,6 +160,12 @@
             <groupId>org.rythmengine</groupId>
             <artifactId>rythm-engine</artifactId>
             <version>${dependency.rythm.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${dependency.commons-lang3.version}</version>
         </dependency>
 
         <dependency>

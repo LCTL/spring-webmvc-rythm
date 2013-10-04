@@ -18,6 +18,9 @@ import org.springframework.cache.CacheManager;
 import org.springframework.web.context.support.WebApplicationObjectSupport;
 
 import com.ctlok.springframework.web.servlet.view.rythm.cache.SpringRythmCache;
+import com.ctlok.springframework.web.servlet.view.rythm.constant.DefaultSessionAttributeName;
+import com.ctlok.springframework.web.servlet.view.rythm.form.CsrfTokenGenerator;
+import com.ctlok.springframework.web.servlet.view.rythm.form.UUIDCsrfTokenGenerator;
 import com.ctlok.springframework.web.servlet.view.rythm.log.RythmLoggerFactory;
 import com.ctlok.springframework.web.servlet.view.rythm.tag.FileBasedTag;
 import com.ctlok.springframework.web.servlet.view.rythm.variable.ImplicitVariable;
@@ -57,6 +60,9 @@ public class RythmConfigurator extends WebApplicationObjectSupport {
       */
     private CacheManager cacheManager;
     private String springCacheName = "RYTHM_TEMPLATE_CACHE";
+    
+    private String csrfTokenSessionName = DefaultSessionAttributeName.CSRF_TOKEN_NAME;
+    private CsrfTokenGenerator csrfTokenGenerator = new UUIDCsrfTokenGenerator();
 
     public Map<String, Object> generateConfig() {
         final Map<String, Object> map = new HashMap<String, Object>();
@@ -370,6 +376,22 @@ public class RythmConfigurator extends WebApplicationObjectSupport {
 
     public void setFileBasedTags(List<FileBasedTag> fileBasedTags) {
         this.fileBasedTags = fileBasedTags;
+    }
+
+    public String getCsrfTokenSessionName() {
+        return csrfTokenSessionName;
+    }
+
+    public void setCsrfTokenSessionName(String csrfTokenSessionName) {
+        this.csrfTokenSessionName = csrfTokenSessionName;
+    }
+
+    public CsrfTokenGenerator getCsrfTokenGenerator() {
+        return csrfTokenGenerator;
+    }
+
+    public void setCsrfTokenGenerator(CsrfTokenGenerator csrfTokenGenerator) {
+        this.csrfTokenGenerator = csrfTokenGenerator;
     }
 
 }

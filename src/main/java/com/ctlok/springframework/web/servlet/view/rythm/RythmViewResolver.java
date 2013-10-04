@@ -14,7 +14,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.web.servlet.view.AbstractTemplateViewResolver;
 
+import com.ctlok.springframework.web.servlet.view.rythm.constant.DefaultRequestParameterName;
 import com.ctlok.springframework.web.servlet.view.rythm.tag.CookieValue;
+import com.ctlok.springframework.web.servlet.view.rythm.tag.CsrfToken;
 import com.ctlok.springframework.web.servlet.view.rythm.tag.DateFormat;
 import com.ctlok.springframework.web.servlet.view.rythm.tag.FileBasedTag;
 import com.ctlok.springframework.web.servlet.view.rythm.tag.FileBasedTagProxy;
@@ -106,7 +108,9 @@ public class RythmViewResolver extends AbstractTemplateViewResolver {
     
     protected void setupSpringRythmConfig(){
     	this.configBuildInImplicitVariables();
+    	this.configBuildInImplicitPackage();
         this.configBuildInTag();
+        this.configBuildInFileBasedTag();
     }
     
     protected void configBuildInImplicitVariables(){
@@ -117,18 +121,51 @@ public class RythmViewResolver extends AbstractTemplateViewResolver {
     	configurator.getImplicitVariables().add(new HttpServletRequestVariable());
     }
     
+    protected void configBuildInImplicitPackage(){
+        
+        if (configurator.getImplicitPackages() == null){
+            
+            configurator.setImplicitPackages(new ArrayList<String>());
+            
+        }
+        
+        configurator.getImplicitPackages().add("com.ctlok.springframework.web.servlet.view.rythm.constant.*");
+        
+    }
+    
     protected void configBuildInTag(){
     	if (configurator.getTags() == null){
     		configurator.setTags(new ArrayList<ITemplate>());
     	}
     	
     	final AutowireCapableBeanFactory factory = this.getApplicationContext().getAutowireCapableBeanFactory();
+    	
     	for (final Class<? extends ITemplate> clazz: this.defaultTagClasses()){
     		final Object tag = factory.autowire(
     				clazz, AutowireCapableBeanFactory.AUTOWIRE_CONSTRUCTOR, false);
     		
     		configurator.getTags().add((ITemplate) tag);
     	}
+    	
+    	configurator.getTags().add(new CsrfToken(configurator.getCsrfTokenGenerator(), configurator.getCsrfTokenSessionName()));
+    }
+    
+    protected void configBuildInFileBasedTag(){
+        
+        if (configurator.getFileBasedTags() == null){
+            
+            configurator.setFileBasedTags(new ArrayList<FileBasedTag>());
+            
+        }
+        
+        final FileBasedTag hiddenCsrfToken = new FileBasedTag();
+        hiddenCsrfToken.setResource(
+                getApplicationContext().getResource(
+                        "classpath:com/ctlok/springframework/web/servlet/view/rythm/tag/template/hiddenCsrfToken.html"));
+        hiddenCsrfToken.setTagName("hiddenCsrfToken");
+        
+        configurator.getFileBasedTags().add(hiddenCsrfToken);
+        
     }
  
 	protected List<Class<? extends ITemplate>> defaultTagClasses(){
