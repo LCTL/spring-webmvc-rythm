@@ -12,9 +12,9 @@ import org.rythmengine.template.ITemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.core.io.Resource;
 import org.springframework.web.servlet.view.AbstractTemplateViewResolver;
 
-import com.ctlok.springframework.web.servlet.view.rythm.constant.DefaultRequestParameterName;
 import com.ctlok.springframework.web.servlet.view.rythm.tag.CookieValue;
 import com.ctlok.springframework.web.servlet.view.rythm.tag.CsrfToken;
 import com.ctlok.springframework.web.servlet.view.rythm.tag.DateFormat;
@@ -34,6 +34,9 @@ import com.ctlok.springframework.web.servlet.view.rythm.variable.ImplicitVariabl
 public class RythmViewResolver extends AbstractTemplateViewResolver {
     
     private static final Logger LOGGER = LoggerFactory.getLogger(RythmViewResolver.class);
+    
+    protected static final String BUILD_IN_FILE_BASED_TAG_LOCATION = 
+            "classpath:com/ctlok/springframework/web/servlet/view/rythm/tag/template/";
     
     private final RythmConfigurator configurator;
     
@@ -57,14 +60,16 @@ public class RythmViewResolver extends AbstractTemplateViewResolver {
     }
     
     protected void initRythm(){
+        
         Rythm.init(configurator.generateConfig());
         
         if (configurator.getTags() != null){
         	for (final ITemplate tag: configurator.getTags()){
+        	    
         		LOGGER.debug("Register tag: [{}]", tag.__getName());
-        		//deprecated from rythm-b7
-                //Rythm.registerTag(tag);
+        		
                 Rythm.engine().registerTemplate(tag);
+                
         	}
         }
         
@@ -104,24 +109,28 @@ public class RythmViewResolver extends AbstractTemplateViewResolver {
         }
         
         LOGGER.info("Rythm version [{}] setup success.", Rythm.engine().version());
+        
     }
     
     protected void setupSpringRythmConfig(){
-    	this.configBuildInImplicitVariables();
-    	this.configBuildInImplicitPackage();
-        this.configBuildInTag();
-        this.configBuildInFileBasedTag();
+    	this.setupBuildInImplicitVariables();
+    	this.setupBuildInImplicitPackage();
+        this.setupBuildInTag();
+        this.setupBuildInFileBasedTag();
     }
     
-    protected void configBuildInImplicitVariables(){
+    protected void setupBuildInImplicitVariables(){
+        
     	if (configurator.getImplicitVariables() == null){
+    	    
     		configurator.setImplicitVariables(new ArrayList<ImplicitVariable>());
+    		
     	}
         			
     	configurator.getImplicitVariables().add(new HttpServletRequestVariable());
     }
     
-    protected void configBuildInImplicitPackage(){
+    protected void setupBuildInImplicitPackage(){
         
         if (configurator.getImplicitPackages() == null){
             
@@ -133,24 +142,23 @@ public class RythmViewResolver extends AbstractTemplateViewResolver {
         
     }
     
-    protected void configBuildInTag(){
+    protected void setupBuildInTag(){
+        
     	if (configurator.getTags() == null){
+    	    
     		configurator.setTags(new ArrayList<ITemplate>());
-    	}
-    	
-    	final AutowireCapableBeanFactory factory = this.getApplicationContext().getAutowireCapableBeanFactory();
-    	
-    	for (final Class<? extends ITemplate> clazz: this.defaultTagClasses()){
-    		final Object tag = factory.autowire(
-    				clazz, AutowireCapableBeanFactory.AUTOWIRE_CONSTRUCTOR, false);
     		
-    		configurator.getTags().add((ITemplate) tag);
     	}
     	
-    	configurator.getTags().add(new CsrfToken(configurator.getCsrfTokenGenerator(), configurator.getCsrfTokenSessionName()));
+    	for (final ITemplate tag: this.createBuildInTags()){
+    	    
+    		configurator.getTags().add(tag);
+    		
+    	}
+
     }
     
-    protected void configBuildInFileBasedTag(){
+    protected void setupBuildInFileBasedTag(){
         
         if (configurator.getFileBasedTags() == null){
             
@@ -158,25 +166,46 @@ public class RythmViewResolver extends AbstractTemplateViewResolver {
             
         }
         
-        final FileBasedTag hiddenCsrfToken = new FileBasedTag();
-        hiddenCsrfToken.setResource(
-                getApplicationContext().getResource(
-                        "classpath:com/ctlok/springframework/web/servlet/view/rythm/tag/template/hiddenCsrfToken.html"));
-        hiddenCsrfToken.setTagName("hiddenCsrfToken");
-        
-        configurator.getFileBasedTags().add(hiddenCsrfToken);
+        for (final FileBasedTag fileBasedTag: createBuildInFileBasedTags()){
+            
+            configurator.getFileBasedTags().add(fileBasedTag);
+            
+        }
         
     }
  
-	protected List<Class<? extends ITemplate>> defaultTagClasses(){
-		List<Class<? extends ITemplate>> classes = new ArrayList<Class<? extends ITemplate>>();
-		classes.add(Url.class);
-		classes.add(FullUrl.class);
-		classes.add(Message.class);
-		classes.add(Secured.class);
-		classes.add(DateFormat.class);
-		classes.add(CookieValue.class);
-		return classes;
+    protected List<ITemplate> createBuildInTags(){
+        
+        final List<ITemplate> tags = new ArrayList<ITemplate>();
+        
+        tags.add(new Url());
+        tags.add(new FullUrl());
+        tags.add(new Message(getApplicationContext()));
+        tags.add(new Secured());
+        tags.add(new DateFormat());
+        tags.add(new CookieValue());
+        tags.add(new CsrfToken(configurator.getCsrfTokenGenerator(), 
+                configurator.getCsrfTokenSessionName()));
+        
+        return tags;
+        
+    }
+    
+    protected List<FileBasedTag> createBuildInFileBasedTags(){
+        
+        final List<FileBasedTag> fileBasedTags = new ArrayList<FileBasedTag>();
+        
+        fileBasedTags.add(
+                new FileBasedTag(createTagResource("hiddenCsrfToken.html"), "hiddenCsrfToken"));
+        
+        return fileBasedTags;
+        
+    }
+    
+    protected Resource createTagResource(final String fileName){
+        
+        return getApplicationContext().getResource(BUILD_IN_FILE_BASED_TAG_LOCATION + fileName);
+        
     }
 	
 	protected List<File> findTemplateFile(final File root){
