@@ -201,6 +201,34 @@ Use `@cookieValue` tag to print cookie or assign to variable:
 @cookieValue("mode").assign("mode")
 ```
 
+### CARF Token
+
+Support auto CSRF token validation in POST request to prevent cross-site request forgery.
+
+#### Spring Config:
+
+```
+<mvc:interceptors>
+    <bean class="com.ctlok.springframework.web.servlet.view.rythm.interceptor.CsrfTokenInterceptor" />
+</mvc:interceptors>
+```
+
+#### Template:
+
+```
+<form action="register.html" method="post">
+    @hiddenCsrfToken()
+</form>
+```
+
+#### Template result:
+
+```
+<form action="register.html" method="post">
+    <input type="hidden" value="8e81a756f8884b70994c1111475d78e4" name="_t" />
+</form>
+```
+
 ## Custom Tag
 
 spring-webmvc-rythm support 2 type custom tag.
