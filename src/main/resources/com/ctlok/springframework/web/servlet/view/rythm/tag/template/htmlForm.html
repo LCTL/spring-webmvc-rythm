@@ -1,0 +1,13 @@
+@args String id = "form", 
+String action = ".", 
+String method = "post", 
+String sclass,
+String properties
+
+<form id="@id" action="@action" method="@method" class="@sclass" @properties>
+    
+    @hiddenCsrfToken()
+    
+    @renderBody()
+    
+</form>

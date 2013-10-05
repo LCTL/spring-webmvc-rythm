@@ -1,0 +1,15 @@
+@args Form form, 
+String name, 
+String id, 
+String sclass, 
+String properties
+
+@{
+    if (id == null || "".equals(id)){
+        id = name;
+    }
+}
+
+<input type="text" id="@id" name="@name" 
+    class="@sclass" value="@form?.getValue(name)" 
+    maxlength="@form?.getMaxLength(name)" @properties />

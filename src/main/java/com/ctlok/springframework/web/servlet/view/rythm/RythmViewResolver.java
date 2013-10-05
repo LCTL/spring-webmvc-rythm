@@ -139,6 +139,7 @@ public class RythmViewResolver extends AbstractTemplateViewResolver {
         }
         
         configurator.getImplicitPackages().add("com.ctlok.springframework.web.servlet.view.rythm.constant.*");
+        configurator.getImplicitPackages().add("com.ctlok.springframework.web.servlet.view.rythm.form.Form");
         
     }
     
@@ -197,6 +198,12 @@ public class RythmViewResolver extends AbstractTemplateViewResolver {
         
         fileBasedTags.add(
                 new FileBasedTag(createTagResource("hiddenCsrfToken.html"), "hiddenCsrfToken"));
+        
+        fileBasedTags.add(
+                new FileBasedTag(createTagResource("inputText.html"), "inputText"));
+        
+        fileBasedTags.add(
+                new FileBasedTag(createTagResource("htmlForm.html"), "htmlForm"));
         
         return fileBasedTags;
         
