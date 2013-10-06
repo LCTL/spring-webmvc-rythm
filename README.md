@@ -5,7 +5,9 @@ Rythm template engine is a high performance templates engine which is multiple t
 
 Rythm template engine source: [https://github.com/greenlaw110/Rythm] (https://github.com/greenlaw110/Rythm)
 
-Rythm template engine tutorial: [http://play-rythm-demo.appspot.com/] (http://play-rythm-demo.appspot.com/)
+Rythm template document: [http://rythmengine.org] (http://rythmengine.org)
+
+Demo Project: [https://github.com/lawrence0819/spring-webmvc-rythm-demo] (https://github.com/lawrence0819/spring-webmvc-rythm-demo)
 
 ## Dependencies:
 
