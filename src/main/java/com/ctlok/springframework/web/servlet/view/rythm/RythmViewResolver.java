@@ -11,7 +11,6 @@ import org.rythmengine.Rythm;
 import org.rythmengine.template.ITemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.web.servlet.view.AbstractTemplateViewResolver;
 
@@ -76,10 +75,12 @@ public class RythmViewResolver extends AbstractTemplateViewResolver {
         if (configurator.getFileBasedTags() != null){
         
             try{
+                
+                boolean disableFileWrite = Rythm.engine().conf().disableFileWrite();
             
                 for (final FileBasedTag fileBasedTag: configurator.getFileBasedTags()){
         
-                    final ITemplate tag = new FileBasedTagProxy(fileBasedTag);
+                    final ITemplate tag = new FileBasedTagProxy(fileBasedTag, disableFileWrite);
     
                     LOGGER.debug("Register file based tag: [{}]", tag.__getName());
     

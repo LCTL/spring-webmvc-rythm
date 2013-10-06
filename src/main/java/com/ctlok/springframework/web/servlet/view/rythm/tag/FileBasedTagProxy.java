@@ -11,6 +11,8 @@ import org.rythmengine.Rythm;
 import org.rythmengine.template.ITemplate;
 import org.rythmengine.template.JavaTagBase;
 import org.rythmengine.template.TagBase;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.io.Resource;
 
@@ -23,17 +25,39 @@ import com.ctlok.springframework.web.servlet.view.rythm.Helper;
  */
 public class FileBasedTagProxy extends JavaTagBase {
     
+    private static final Logger LOGGER = LoggerFactory.getLogger(FileBasedTagProxy.class);
+    
+    private final boolean disableFileWrite;
     private final File file;
+    private final String templateString;
     private final String tagName;
     private final Method templateSetBodyMethod;
     
-    public FileBasedTagProxy(final FileBasedTag fileBasedTag) throws IOException{
+    public FileBasedTagProxy(final FileBasedTag fileBasedTag, final boolean disableFileWrite) throws IOException{
+
+        this.disableFileWrite = disableFileWrite;
+
+        if (disableFileWrite){
         
-        this.file = Helper.copyResourceToTempDirectory(fileBasedTag.getResource());
+            this.templateString = Helper.inputStreamToString(fileBasedTag.getResource().getInputStream());
+            this.file = null;
+            
+            LOGGER.debug("Disable file write. Load template file as String: [{}]", this.templateString);
+            
+        } else {
+            
+            this.file = Helper.copyResourceToTempDirectory(fileBasedTag.getResource());
+            this.templateString = null;
+            
+            LOGGER.debug("Enable file write. Copy template file to: [{}]", file.getAbsolutePath());
+            
+        }
+        
         this.tagName = fileBasedTag.getTagName() == null ? 
                 getDefaultTagName(fileBasedTag.getResource()) : fileBasedTag.getTagName();
                 
         this.templateSetBodyMethod = findTagBaseSetBodyMethod();
+        
     }
     
     private String getDefaultTagName(final Resource resource){
@@ -67,7 +91,7 @@ public class FileBasedTagProxy extends JavaTagBase {
     @Override
     protected void call(__ParameterList params, __Body body) {
 
-        ITemplate template = null;
+        final ITemplate template = createTemplate();
         
         if (params.asMap().isEmpty()){
         
@@ -81,25 +105,47 @@ public class FileBasedTagProxy extends JavaTagBase {
                 
             }
             
-            template = Rythm.engine().getTemplate(file, templateArguments.toArray());
+            template.__setRenderArgs(templateArguments.toArray());
             
         } else {
         
-            template = Rythm.engine().getTemplate(file, params.asMap());
+            template.__setRenderArgs(params.asMap());
+            
+        }
+        
+        if (body != null){
+        
+            try {
+                
+                templateSetBodyMethod.invoke(template, body);
+                
+            } catch (Exception e) {
+                
+                throw new IllegalStateException(e);
+                
+            } 
         
         }
-
-        try {
-            
-            templateSetBodyMethod.invoke(template, body);
-            
-        } catch (Exception e) {
-            
-            throw new IllegalStateException(e);
-            
-        } 
         
         this.p(template.render());
+        
+    }
+    
+    protected ITemplate createTemplate(){
+        
+        ITemplate template = null;
+        
+        if (disableFileWrite) {
+            
+            template = Rythm.engine().getTemplate(templateString);
+            
+        } else {
+            
+            template = Rythm.engine().getTemplate(file);
+            
+        }
+        
+        return template;
         
     }
 

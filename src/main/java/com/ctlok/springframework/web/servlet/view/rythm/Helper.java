@@ -1,9 +1,11 @@
 package com.ctlok.springframework.web.servlet.view.rythm;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +29,46 @@ public class Helper {
 	    } catch (IllegalStateException e){
 	        return null;
 	    }
+	}
+	
+	public static String inputStreamToString(InputStream inputStream){
+	    
+	    final StringBuilder builder = new StringBuilder();
+        final BufferedReader bufferedReader = new BufferedReader(
+                new InputStreamReader(inputStream));
+	    
+	    try{
+
+            String line = bufferedReader.readLine();
+            
+            while(line != null){
+                builder.append(line);
+                builder.append('\n');
+                line = bufferedReader.readLine();
+            }
+            
+            bufferedReader.close();
+    	    
+    	    return builder.toString();
+	    
+	    } catch (IOException e){
+	        
+	        throw new IllegalStateException(e);
+	        
+	    } finally {
+	        
+	        try {
+                
+	            bufferedReader.close();
+                
+            } catch (IOException e) {
+                
+                throw new IllegalStateException(e);
+                
+            }
+	        
+	    }
+	    
 	}
 	
 	public static void inputStreamToOutputStream(InputStream inputStream, OutputStream outputStream){
