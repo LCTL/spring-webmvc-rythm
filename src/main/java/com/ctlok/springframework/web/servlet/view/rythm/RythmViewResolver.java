@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 
@@ -60,7 +61,11 @@ public class RythmViewResolver extends AbstractTemplateViewResolver {
     
     protected void initRythm(){
         
-        Rythm.init(configurator.generateConfig());
+        final Map<String, Object> config = configurator.generateConfig();
+        
+        LOGGER.debug("Rythm config: [{}]", config);
+        
+        Rythm.init(config);
         
         if (configurator.getTags() != null){
         	for (final ITemplate tag: configurator.getTags()){
