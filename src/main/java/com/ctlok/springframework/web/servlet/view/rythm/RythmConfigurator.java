@@ -72,7 +72,7 @@ public class RythmConfigurator extends WebApplicationObjectSupport {
         this.setConfig(map, "feature.transformer.enabled", enableJavaExtensions);
         this.setConfig(map, "engine.load_precompiled.enabled", loadPreCompiled);
         this.setConfig(map, "log.time.render.enabled", logRenderTime);
-        this.setConfig(map, "engine.file_write.enabled", noFileWrite);
+        this.setConfig(map, "engine.file_write.enabled", noFileWrite == null ? null : !noFileWrite);
 
         this.modeConfig(map);
         this.preCompiledRootConfig(map);
