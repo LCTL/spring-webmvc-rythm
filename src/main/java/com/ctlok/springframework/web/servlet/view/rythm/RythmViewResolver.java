@@ -101,19 +101,6 @@ public class RythmViewResolver extends AbstractTemplateViewResolver {
         
         }
         
-        
-        if (configurator.isPreCompiledRoot() != null 
-        		&& configurator.getRootDirectory() != null
-        		&& configurator.isPreCompiledRoot()){
-        	
-        	final File root = new File(this.getServletContext().getRealPath(configurator.getRootDirectory()));
-        	for (final File templateFile: this.findTemplateFile(root)){
-        		LOGGER.debug("Pre compile template: [{}]", templateFile.getAbsolutePath());
-        		Rythm.engine().getTemplate(templateFile);
-        	}
-        	
-        }
-        
         LOGGER.info("Rythm version [{}] setup success.", Rythm.engine().version());
         
     }

@@ -1,6 +1,5 @@
 package com.ctlok.springframework.web.servlet.view.rythm;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,8 +34,8 @@ public class RythmConfigurator extends WebApplicationObjectSupport {
     private Boolean enableJavaExtensions;
     private Boolean loadPreCompiled;
     private Boolean logRenderTime;
-    private Boolean preCompiledRoot;
     private Boolean noFileWrite;
+    private Boolean preCompile;
 
     private String mode;
     private String rootDirectory;
@@ -73,9 +72,9 @@ public class RythmConfigurator extends WebApplicationObjectSupport {
         this.setConfig(map, "engine.load_precompiled.enabled", loadPreCompiled);
         this.setConfig(map, "log.time.render.enabled", logRenderTime);
         this.setConfig(map, "engine.file_write.enabled", noFileWrite == null ? null : !noFileWrite);
+        this.setConfig(map, "engine.precompile_mode.enabled", preCompile);
 
         this.modeConfig(map);
-        this.preCompiledRootConfig(map);
         this.rootDirectoryConfig(map);
         this.setConfig(map, "home.tmp", tempDirectory);
 
@@ -187,13 +186,6 @@ public class RythmConfigurator extends WebApplicationObjectSupport {
         }
     }
 
-    protected void preCompiledRootConfig(final Map<String, Object> map) {
-        if (preCompiledRoot != null && rootDirectory != null) {
-            final File root = new File(this.getServletContext().getRealPath(this.rootDirectory));
-            map.put("home.precompiled", root);
-        }
-    }
-
     public Boolean isCacheInProductionModeOnly() {
         return cacheInProductionModeOnly;
     }
@@ -242,20 +234,20 @@ public class RythmConfigurator extends WebApplicationObjectSupport {
         this.logRenderTime = logRenderTime;
     }
 
+    public Boolean isPreCompile() {
+        return preCompile;
+    }
+
+    public void setPreCompile(Boolean preCompile) {
+        this.preCompile = preCompile;
+    }
+
     public String getMode() {
         return mode;
     }
 
     public void setMode(String mode) {
         this.mode = mode;
-    }
-
-    public Boolean isPreCompiledRoot() {
-        return preCompiledRoot;
-    }
-
-    public void setPreCompiledRoot(Boolean preCompiledRoot) {
-        this.preCompiledRoot = preCompiledRoot;
     }
 
     public String getRootDirectory() {
