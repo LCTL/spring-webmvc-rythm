@@ -13,9 +13,9 @@ String properties
             && value.equals(form.getValue(name));
 }
 
-<input type="radio" name="@name" class="@sclass" value="true" 
+<input type="radio" name="@name" class="@sclass" value="@value" 
 
-    if(SpringRythmFormHelper.isNotNullNotEmpty(id)){
+    @if(SpringRythmFormHelper.isNotNullNotEmpty(id)){
         id="@id"
     }
     
