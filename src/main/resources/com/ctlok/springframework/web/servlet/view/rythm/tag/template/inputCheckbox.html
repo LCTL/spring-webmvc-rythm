@@ -1,0 +1,17 @@
+@args Form form, 
+String name, 
+String id, 
+String sclass, 
+String properties
+
+@{
+    if(!SpringRythmFormHelper.isNotNullNotEmpty(id)){
+        id = name;
+    }
+}
+
+<input type="checkbox" id="@id" name="@name" class="@sclass" value="true" 
+    @if(SpringRythmFormHelper.isNotNull(form) && form.isChecked(name)){
+        checked="checked"
+    }
+    @properties />

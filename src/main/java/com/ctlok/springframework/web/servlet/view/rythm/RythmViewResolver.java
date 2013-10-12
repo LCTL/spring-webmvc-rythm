@@ -108,8 +108,8 @@ public class RythmViewResolver extends AbstractTemplateViewResolver {
     protected void setupSpringRythmConfig(){
     	this.setupBuildInImplicitVariables();
     	this.setupBuildInImplicitPackage();
-        this.setupBuildInTag();
-        this.setupBuildInFileBasedTag();
+        this.setupBuiltInTag();
+        this.setupBuiltInFileBasedTag();
     }
     
     protected void setupBuildInImplicitVariables(){
@@ -131,12 +131,24 @@ public class RythmViewResolver extends AbstractTemplateViewResolver {
             
         }
         
-        configurator.getImplicitPackages().add("com.ctlok.springframework.web.servlet.view.rythm.constant.*");
-        configurator.getImplicitPackages().add("com.ctlok.springframework.web.servlet.view.rythm.form.Form");
+        configurator.getImplicitPackages().add(
+                com.ctlok.springframework.web.servlet.view.rythm.constant.DefaultApplicationVariable.class.getName());
+        
+        configurator.getImplicitPackages().add(
+                com.ctlok.springframework.web.servlet.view.rythm.constant.DefaultRequestParameterName.class.getName());
+        
+        configurator.getImplicitPackages().add(
+                com.ctlok.springframework.web.servlet.view.rythm.constant.DefaultSessionAttributeName.class.getName());
+        
+        configurator.getImplicitPackages().add(
+                com.ctlok.springframework.web.servlet.view.rythm.form.Form.class.getName());
+        
+        configurator.getImplicitPackages().add(
+                com.ctlok.springframework.web.servlet.view.rythm.tag.helper.SpringRythmFormHelper.class.getName());
         
     }
     
-    protected void setupBuildInTag(){
+    protected void setupBuiltInTag(){
         
     	if (configurator.getTags() == null){
     	    
@@ -144,7 +156,7 @@ public class RythmViewResolver extends AbstractTemplateViewResolver {
     		
     	}
     	
-    	for (final ITemplate tag: this.createBuildInTags()){
+    	for (final ITemplate tag: this.createBuiltInTags()){
     	    
     		configurator.getTags().add(tag);
     		
@@ -152,7 +164,7 @@ public class RythmViewResolver extends AbstractTemplateViewResolver {
 
     }
     
-    protected void setupBuildInFileBasedTag(){
+    protected void setupBuiltInFileBasedTag(){
         
         if (configurator.getFileBasedTags() == null){
             
@@ -160,7 +172,7 @@ public class RythmViewResolver extends AbstractTemplateViewResolver {
             
         }
         
-        for (final FileBasedTag fileBasedTag: createBuildInFileBasedTags()){
+        for (final FileBasedTag fileBasedTag: createBuiltInFileBasedTags()){
             
             configurator.getFileBasedTags().add(fileBasedTag);
             
@@ -168,7 +180,7 @@ public class RythmViewResolver extends AbstractTemplateViewResolver {
         
     }
  
-    protected List<ITemplate> createBuildInTags(){
+    protected List<ITemplate> createBuiltInTags(){
         
         final List<ITemplate> tags = new ArrayList<ITemplate>();
         
@@ -185,18 +197,27 @@ public class RythmViewResolver extends AbstractTemplateViewResolver {
         
     }
     
-    protected List<FileBasedTag> createBuildInFileBasedTags(){
+    protected List<FileBasedTag> createBuiltInFileBasedTags(){
         
         final List<FileBasedTag> fileBasedTags = new ArrayList<FileBasedTag>();
         
-        fileBasedTags.add(
-                new FileBasedTag(createTagResource("hiddenCsrfToken.html"), "hiddenCsrfToken"));
+        fileBasedTags.add(createFileBasedTag("hiddenCsrfToken.html", "hiddenCsrfToken"));
         
-        fileBasedTags.add(
-                new FileBasedTag(createTagResource("inputText.html"), "inputText"));
+        fileBasedTags.add(createFileBasedTag("htmlForm.html", "htmlForm"));
         
-        fileBasedTags.add(
-                new FileBasedTag(createTagResource("htmlForm.html"), "htmlForm"));
+        fileBasedTags.add(createFileBasedTag("inputHidden.html", "inputHidden"));
+        
+        fileBasedTags.add(createFileBasedTag("inputCheckbox.html", "inputCheckbox"));
+        
+        fileBasedTags.add(createFileBasedTag("inputOption.html", "inputOption"));
+        
+        fileBasedTags.add(createFileBasedTag("inputRadio.html", "inputRadio"));
+        
+        fileBasedTags.add(createFileBasedTag("inputSelect.html", "inputSelect"));
+        
+        fileBasedTags.add(createFileBasedTag("inputText.html", "inputText"));
+        
+        fileBasedTags.add(createFileBasedTag("inputTextarea.html", "inputTextarea"));
         
         return fileBasedTags;
         
@@ -224,6 +245,12 @@ public class RythmViewResolver extends AbstractTemplateViewResolver {
 		}
 		
 		return templateFiles;
+	}
+	
+	protected FileBasedTag createFileBasedTag(String templateName, String tagName){
+	    
+	    return new FileBasedTag(createTagResource(templateName), tagName);
+	    
 	}
 
 }

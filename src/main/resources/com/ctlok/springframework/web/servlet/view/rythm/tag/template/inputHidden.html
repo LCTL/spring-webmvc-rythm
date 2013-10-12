@@ -1,0 +1,13 @@
+@args Form form,
+String name, 
+String id, 
+String sclass,
+String properties
+
+@{
+    if(!SpringRythmFormHelper.isNotNullNotEmpty(id)){
+        id = name;
+    }
+}
+
+<input type="hidden" id="@id" name="@name" class="@sclass" value="@form?.getValue(name)" @properties />

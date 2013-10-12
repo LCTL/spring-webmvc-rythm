@@ -1,0 +1,33 @@
+@args Form form,
+String name, 
+String id,
+String value,
+String label,
+String sclass, 
+String properties
+
+@{
+    if(!SpringRythmFormHelper.isNotNullNotEmpty(id)){
+        id = name;
+    }
+    
+    if (!SpringRythmFormHelper.isNotNullNotEmpty(value) && SpringRythmFormHelper.isNotNullNotEmpty(label)){
+        value = label;
+    }else if (SpringRythmFormHelper.isNotNullNotEmpty(value) && !SpringRythmFormHelper.isNotNullNotEmpty(label)){
+        label = value;
+    }
+    
+    boolean selected = 
+        SpringRythmFormHelper.isNotNull(form) 
+            && SpringRythmFormHelper.isNotNullNotEmpty(value) 
+            && value.equals(form.getValue(name));
+}
+
+<option 
+    value="@value" 
+    @if(selected){
+        selected="selected"
+    }
+    >
+    @label
+</option> 

@@ -5,7 +5,7 @@ String sclass,
 String properties
 
 @{
-    if (id == null || "".equals(id)){
+    if(!SpringRythmFormHelper.isNotNullNotEmpty(id)){
         id = name;
     }
 }

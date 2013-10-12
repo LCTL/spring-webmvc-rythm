@@ -1,0 +1,26 @@
+@args Form form, 
+String name, 
+String id, 
+String value,
+String sclass, 
+String properties
+
+
+@{
+    boolean checked = 
+        SpringRythmFormHelper.isNotNull(form) 
+            && SpringRythmFormHelper.isNotNullNotEmpty(value) 
+            && value.equals(form.getValue(name));
+}
+
+<input type="radio" name="@name" class="@sclass" value="true" 
+
+    if(SpringRythmFormHelper.isNotNullNotEmpty(id)){
+        id="@id"
+    }
+    
+    @if(checked){
+        checked="checked"
+    }
+    
+    @properties />

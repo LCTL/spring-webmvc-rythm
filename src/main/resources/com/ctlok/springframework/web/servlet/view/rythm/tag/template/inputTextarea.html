@@ -1,0 +1,17 @@
+@args Form form, 
+String name, 
+String id, 
+int rows = 10,
+int cols = 10,
+String sclass, 
+String properties
+
+@{
+    if(!SpringRythmFormHelper.isNotNullNotEmpty(id)){
+        id = name;
+    }
+}
+
+<textarea id="@id" name="@name" rows="@rows" cols="@cols" class="@sclass" maxlength="@form?.getMaxLength(name)" @properties>
+    @form?.getValue(name)
+</textarea>
