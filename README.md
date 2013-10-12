@@ -24,7 +24,7 @@ Demo Project: [https://github.com/lawrence0819/spring-webmvc-rythm-demo] (https:
 <dependency>
     <groupId>com.ctlok</groupId>
     <artifactId>spring-webmvc-rythm</artifactId>
-    <version>1.3.6</version>
+    <version>1.4.0</version>
 </dependency>
 ```
 
