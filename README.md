@@ -3,6 +3,8 @@
 This is a plugin for Spring to adapt Rythm template engine. 
 Rythm template engine is a high performance templates engine which is multiple times faster than groovy, velocity and freemarker.
 
+[Online Demo (powered by heroku)] (http://spring-webmvc-rythm.ctlok.com/)
+
 Rythm template engine source: [https://github.com/greenlaw110/Rythm] (https://github.com/greenlaw110/Rythm)
 
 Rythm template document: [http://rythmengine.org] (http://rythmengine.org)
