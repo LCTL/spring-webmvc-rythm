@@ -40,6 +40,7 @@ public class RythmConfigurator extends WebApplicationObjectSupport {
     private String mode;
     private String rootDirectory;
     private String tempDirectory;
+    private String preCompiledDirectory;
     private Integer cacheDefaultTTL;
 
     private List<String> implicitPackages;
@@ -76,6 +77,7 @@ public class RythmConfigurator extends WebApplicationObjectSupport {
 
         this.modeConfig(map);
         this.rootDirectoryConfig(map);
+        this.preCompiledDirectoryConfig(map);
         this.setConfig(map, "home.tmp", tempDirectory);
 
         this.setConfig(map, "default.cache_ttl", cacheDefaultTTL);
@@ -172,6 +174,13 @@ public class RythmConfigurator extends WebApplicationObjectSupport {
         if (this.rootDirectory != null) {
             map.put("home.template",
                     this.getServletContext().getRealPath(this.rootDirectory));
+        }
+    }
+    
+    protected void preCompiledDirectoryConfig(final Map<String, Object> map){
+        if (this.preCompiledDirectory != null) {
+            map.put("home.precompiled.dir",
+                    this.getServletContext().getRealPath(this.preCompiledDirectory));
         }
     }
 
@@ -384,6 +393,14 @@ public class RythmConfigurator extends WebApplicationObjectSupport {
 
     public void setCsrfTokenGenerator(CsrfTokenGenerator csrfTokenGenerator) {
         this.csrfTokenGenerator = csrfTokenGenerator;
+    }
+
+    public String getPreCompiledDirectory() {
+        return preCompiledDirectory;
+    }
+
+    public void setPreCompiledDirectory(String preCompiledDirectory) {
+        this.preCompiledDirectory = preCompiledDirectory;
     }
 
 }
