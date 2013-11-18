@@ -20,7 +20,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
  */
 public class Helper {
 
-    private static final String TEMP_DIR = System.getProperty("java.io.tmpdir") + "/spring-webmvc-rythm";
+    public static final String TEMP_DIR = System.getProperty("java.io.tmpdir") + "/spring-webmvc-rythm";
     
 	public static HttpServletRequest getCurrentRequest(){
 	    try{
@@ -94,29 +94,35 @@ public class Helper {
 	
 	public static File copyResourceToTempDirectory(Resource resource){
 	    
-	    final File file = createTempFile(resource.getFilename());
-	    InputStream inputStream = null;
-	    OutputStream outputStream = null;
+	    return copyResourceToTempDirectory(TEMP_DIR, resource);
 	    
-	    try{
-	        
-	        inputStream = resource.getInputStream();
-	        outputStream = new FileOutputStream(file);
-	        
-	        inputStreamToOutputStream(inputStream, outputStream);
-	        
-	        return file;
-	        
-	    } catch (IOException e) {
-	        
-	        throw new IllegalStateException(e);
-	        
+	}
+	
+	public static File copyResourceToTempDirectory(String tempDirectoryPath, Resource resource){
+        
+        final File file = createTempFile(tempDirectoryPath, resource.getFilename());
+        InputStream inputStream = null;
+        OutputStream outputStream = null;
+        
+        try{
+            
+            inputStream = resource.getInputStream();
+            outputStream = new FileOutputStream(file);
+            
+            inputStreamToOutputStream(inputStream, outputStream);
+            
+            return file;
+            
+        } catch (IOException e) {
+            
+            throw new IllegalStateException(e);
+            
         } finally {
-	        
-	        if (inputStream != null){
-	            
-	            try {
-	                
+            
+            if (inputStream != null){
+                
+                try {
+                    
                     inputStream.close();
                     
                 } catch (IOException e) {
@@ -124,13 +130,13 @@ public class Helper {
                     throw new IllegalStateException(e);
                     
                 }
-	            
-	        }
-	        
-	        if (outputStream != null){
-	            
-	            try {
-	                
+                
+            }
+            
+            if (outputStream != null){
+                
+                try {
+                    
                     outputStream.close();
                     
                 } catch (IOException e) {
@@ -138,22 +144,22 @@ public class Helper {
                     throw new IllegalStateException(e);
                     
                 }
-	            
-	        }
-	        
-	    }
-	    
-	}
+                
+            }
+            
+        }
+        
+    }
 	
-	private static File createTempFile(String fileName){
-	    
-	    final File tempDir = new File(TEMP_DIR);
-	    final File file = new File(TEMP_DIR + "/" + fileName);
-	    
-	    tempDir.mkdirs();
-	    
-	    return file;
-	    
-	}
+	private static File createTempFile(String tempDirPath, String fileName){
+        
+        final File tempDir = new File(tempDirPath);
+        final File file = new File(tempDirPath + "/" + fileName);
+        
+        tempDir.mkdirs();
+        
+        return file;
+        
+    }
 	
 }

@@ -41,6 +41,7 @@ public class RythmConfigurator extends WebApplicationObjectSupport {
     private String rootDirectory;
     private String tempDirectory;
     private String preCompiledDirectory;
+    private String fileBasedTagTempDirectory;
     private Integer cacheDefaultTTL;
 
     private List<String> implicitPackages;
@@ -401,6 +402,14 @@ public class RythmConfigurator extends WebApplicationObjectSupport {
 
     public void setPreCompiledDirectory(String preCompiledDirectory) {
         this.preCompiledDirectory = preCompiledDirectory;
+    }
+
+    public String getFileBasedTagTempDirectory() {
+        return fileBasedTagTempDirectory;
+    }
+
+    public void setFileBasedTagTempDirectory(String fileBasedTagTempDirectory) {
+        this.fileBasedTagTempDirectory = fileBasedTagTempDirectory;
     }
 
 }

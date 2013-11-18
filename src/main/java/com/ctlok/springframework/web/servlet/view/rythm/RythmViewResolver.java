@@ -82,10 +82,18 @@ public class RythmViewResolver extends AbstractTemplateViewResolver {
             try{
                 
                 boolean disableFileWrite = Rythm.engine().conf().disableFileWrite();
-            
+                String fileBasedTagTempDirectory = configurator.getFileBasedTagTempDirectory();
+                
+                if (fileBasedTagTempDirectory == null){
+                    
+                    fileBasedTagTempDirectory = Helper.TEMP_DIR;
+                    
+                }
+                
                 for (final FileBasedTag fileBasedTag: configurator.getFileBasedTags()){
         
-                    final ITemplate tag = new FileBasedTagProxy(fileBasedTag, disableFileWrite);
+                    final ITemplate tag = new FileBasedTagProxy(
+                            fileBasedTag, fileBasedTagTempDirectory, disableFileWrite);
     
                     LOGGER.debug("Register file based tag: [{}]", tag.__getName());
     

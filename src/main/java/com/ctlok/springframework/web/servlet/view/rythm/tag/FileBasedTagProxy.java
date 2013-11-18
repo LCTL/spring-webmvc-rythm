@@ -33,7 +33,10 @@ public class FileBasedTagProxy extends JavaTagBase {
     private final String tagName;
     private final Method templateSetBodyMethod;
     
-    public FileBasedTagProxy(final FileBasedTag fileBasedTag, final boolean disableFileWrite) throws IOException{
+    public FileBasedTagProxy(
+            final FileBasedTag fileBasedTag, 
+            final String tempDirectoryPath, 
+            final boolean disableFileWrite) throws IOException{
 
         this.disableFileWrite = disableFileWrite;
 
@@ -46,7 +49,7 @@ public class FileBasedTagProxy extends JavaTagBase {
             
         } else {
             
-            this.file = Helper.copyResourceToTempDirectory(fileBasedTag.getResource());
+            this.file = Helper.copyResourceToTempDirectory(tempDirectoryPath, fileBasedTag.getResource());
             this.templateString = null;
             
             LOGGER.debug("Enable file write. Copy template file to: [{}]", file.getAbsolutePath());
@@ -59,6 +62,8 @@ public class FileBasedTagProxy extends JavaTagBase {
         this.templateSetBodyMethod = findTagBaseSetBodyMethod();
         
     }
+    
+    
     
     private String getDefaultTagName(final Resource resource){
         
