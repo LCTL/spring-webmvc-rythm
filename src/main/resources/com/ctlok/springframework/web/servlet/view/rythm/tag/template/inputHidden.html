@@ -10,4 +10,4 @@ String properties
     }
 }
 
-<input type="hidden" id="@id" name="@name" class="@sclass" value="@form?.getValue(name)" @properties />
+<input type="hidden" id="@id" name="@name" class="@sclass" value="@form?.getValue(name)" @properties?.raw() />

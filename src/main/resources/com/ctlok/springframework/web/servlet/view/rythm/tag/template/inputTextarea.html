@@ -12,6 +12,6 @@ String properties
     }
 }
 
-<textarea id="@id" name="@name" rows="@rows" cols="@cols" class="@sclass" maxlength="@form?.getMaxLength(name)" @properties>
+<textarea id="@id" name="@name" rows="@rows" cols="@cols" class="@sclass" maxlength="@form?.getMaxLength(name)" @properties?.raw()>
     @form?.getValue(name)
 </textarea>

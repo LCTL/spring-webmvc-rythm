@@ -12,4 +12,4 @@ String properties
 
 <input type="text" id="@id" name="@name" 
     class="@sclass" value="@form?.getValue(name)" 
-    maxlength="@form?.getMaxLength(name)" @properties />
+    maxlength="@form?.getMaxLength(name)" @properties?.raw() />

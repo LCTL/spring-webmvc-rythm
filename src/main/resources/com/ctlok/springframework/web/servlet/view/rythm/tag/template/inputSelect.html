@@ -10,6 +10,6 @@ String properties
     }
 }
 
-<select id="@id" name="@name" class="@sclass">
+<select id="@id" name="@name" class="@sclass" @properties?.raw()>
     @renderBody()
 </select>
