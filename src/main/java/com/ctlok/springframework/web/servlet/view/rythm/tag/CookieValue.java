@@ -26,7 +26,7 @@ public class CookieValue extends JavaTagBase {
         final String name = (String) params.getDefault();
         String value = "";
         
-        if (request!= null){
+        if (request != null && request.getCookies() != null){
             
             for (final Cookie cookie: request.getCookies()){
                 
