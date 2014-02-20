@@ -92,7 +92,7 @@ public class SpringRythmCache implements ICacheService {
         // Nothing to do
     }
 
-    class CacheWrapper implements Serializable {
+    static class CacheWrapper implements Serializable {
 
         private static final long serialVersionUID = 8422330991415116904L;
 
