@@ -29,6 +29,7 @@ import com.ctlok.springframework.web.servlet.view.rythm.variable.ImplicitVariabl
  */
 public class RythmConfigurator extends WebApplicationObjectSupport {
 
+    private Boolean cacheEnabled;
     private Boolean cacheInProductionModeOnly;
     private Boolean compactOutput;
     private Boolean enableJavaExtensions;
@@ -68,6 +69,7 @@ public class RythmConfigurator extends WebApplicationObjectSupport {
     public Map<String, Object> generateConfig() {
         final Map<String, Object> map = new HashMap<String, Object>();
 
+        this.setConfig(map, "cache.enabled", cacheEnabled);
         this.setConfig(map, "cache.prod_only.enabled", cacheInProductionModeOnly);
         this.setConfig(map, "codegen.compact.enabled", compactOutput);
         this.setConfig(map, "feature.transformer.enabled", enableJavaExtensions);
@@ -75,7 +77,7 @@ public class RythmConfigurator extends WebApplicationObjectSupport {
         this.setConfig(map, "log.time.render.enabled", logRenderTime);
         this.setConfig(map, "engine.file_write.enabled", noFileWrite == null ? null : !noFileWrite);
         this.setConfig(map, "engine.precompile_mode.enabled", preCompile);
-
+        
         this.modeConfig(map);
         this.rootDirectoryConfig(map);
         this.preCompiledDirectoryConfig(map);
@@ -194,6 +196,14 @@ public class RythmConfigurator extends WebApplicationObjectSupport {
 
             this.setConfig(map, "cache.service.impl", springRythmCache);
         }
+    }
+    
+    public Boolean getCacheEnabled() {
+        return cacheEnabled;
+    }
+
+    public void setCacheEnabled(Boolean cacheEnabled) {
+        this.cacheEnabled = cacheEnabled;
     }
 
     public Boolean isCacheInProductionModeOnly() {
